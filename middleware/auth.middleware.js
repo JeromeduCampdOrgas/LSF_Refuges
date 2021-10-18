@@ -2,7 +2,10 @@ const jwt = require("jsonwebtoken");
 const UserModel = require("../models/user.model");
 
 module.exports.checkUser = (req, res, next) => {
-  const token = req.cookies.jwt;
+  let longueur = req.headers.cookie.length;
+
+  const token = req.headers.cookie.substring(6, longueur);
+  //const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
       if (err) {
@@ -22,7 +25,10 @@ module.exports.checkUser = (req, res, next) => {
 };
 
 module.exports.requireAuth = (req, res, next) => {
-  const token = req.cookies.jwt;
+  let longueur = req.headers.cookie.length;
+
+  const token = req.headers.cookie.substring(6, longueur);
+  //const token = req.cookies.jwt;
   if (token) {
     jwt.verify(token, process.env.TOKEN_SECRET, async (err, decodedToken) => {
       if (err) {

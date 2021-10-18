@@ -17,6 +17,7 @@ module.exports.userInfo = (req, res) => {
 };
 
 module.exports.updateUser = async (req, res) => {
+  console.log(ObjectID);
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
@@ -33,7 +34,7 @@ module.exports.updateUser = async (req, res) => {
       { new: true, upsert: true, setDefaultsOnInsert: true },
       (err, docs) => {
         if (!err) return res.send(docs);
-        if (err) return res.status(500).send({ message: err });
+        if (err) return res.status(500).send({ message: "une erreur" });
       }
     );
   } catch (err) {
