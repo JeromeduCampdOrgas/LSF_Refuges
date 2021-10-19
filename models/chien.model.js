@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-const dogsSchema = new mongoose.Schema(
+const chienSchema = new mongoose.Schema(
   {
     refuge: {
       type: String,
@@ -15,7 +15,6 @@ const dogsSchema = new mongoose.Schema(
     robe: { type: String },
     emplacement: {
       type: String,
-      required: true,
     },
     imageUrl: {
       type: String,
@@ -46,5 +45,5 @@ const dogsSchema = new mongoose.Schema(
   }
 );
 
-const ProductModel = mongoose.model("product", productSchema);
-module.exports = ProductModel;
+const ChienModel = mongoose.model("chien", chienSchema);
+module.exports = ChienModel;

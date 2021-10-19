@@ -17,3 +17,5 @@ router.delete("/:id", chienController.deleteOneChien);
 
 ///Créer un produit
 router.post("/", upload.single("imageUrl"), chienController.newChien);
+
+module.exports = router;

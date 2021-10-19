@@ -1,4 +1,4 @@
-const ChienModel = require("../../models/chiens.model");
+const ChienModel = require("../../models/chien.model");
 const fs = require("fs"); //natif express ou node
 const { promisify } = require("util"); //natif express ou node
 const pipeline = promisify(require("stream").pipeline);
@@ -10,10 +10,9 @@ const uuid = uuidv4();
 
 //Création produit
 module.exports.newChien = (req, res) => {
-  //console.log(req.file);
-
   let fileName;
-  if (req.file !== null) {
+  /*if (req.file !== null) {
+    
     try {
       if (
         req.file.detectedMimeType != "image/jpg" &&
@@ -23,46 +22,47 @@ module.exports.newChien = (req, res) => {
         throw Error("invalid file");
     } catch (err) {
       //const errors = uploadErrors(err);
+      //console.log(errors);
       return res.status(201).json({ err: "y'a un probleme ici" });
-    }
+    }*/
 
-    fileName = req.body.name + ".jpg";
-    console.log(fileName);
-    pipeline(
-      req.file.stream,
-      //console.log(req.file.stream)
-      fs.createWriteStream(
-        `${__dirname}/../../client/public/uploads/products/${fileName}`
-      )
-    );
+  fileName = req.body.name + ".jpg";
 
-    const newChien = new ChienModel({
-      refuge: req.body.refuge,
-      name: req.body.name,
-      robe: req.body.robe,
-      imageUrl: req.file !== null ? "./uploads/products/" + fileName : "",
-      age: req.body.age,
-      description: req.body.description,
-      sexe: req.body.sexe,
-      chat: req.body.chat,
-      divers: req.body.divers,
-      carrousel: req.body.carrousel,
-    });
+  /*pipeline(
+    req.file.stream,
+    //console.log(req.file.stream)
+    fs.createWriteStream(
+      `${__dirname}/../../client/public/uploads/chiens/${fileName}`
+    )
+  );*/
 
-    try {
-      const chien = newChien.save();
-      return res.status(201).json(chien);
-    } catch (err) {
-      res.status(200).send({ err: "raté" });
-    }
+  const newChien = new ChienModel({
+    refuge: req.body.refuge,
+    name: req.body.name,
+    robe: req.body.robe,
+    imageUrl: req.file !== null ? "./uploads/chiens/" + fileName : "",
+    age: req.body.age,
+    description: req.body.description,
+    sexe: req.body.sexe,
+    chat: req.body.chat,
+    divers: req.body.divers,
+    carrousel: req.body.carrousel,
+  });
+
+  try {
+    const chien = newChien.save();
+    return res.status(201).json(chien);
+  } catch (err) {
+    res.status(200).send({ err: "raté" });
   }
+  //}
 };
 
 //get 1 produit
 module.exports.getChien = (req, res) => {
   //console.log("coucou");
   //console.log(req.params.id);
-  ChientModel.findOne({ _id: req.params.id }, (err, docs) => {
+  ChienModel.findOne({ _id: req.params.id }, (err, docs) => {
     res.send(docs);
   });
 };
@@ -79,7 +79,7 @@ module.exports.updateOneChien = async (req, res) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send("ID unknown : " + req.params.id);
   } else {
-    await ChientModel.findOneAndUpdate(
+    await ChienModel.findOneAndUpdate(
       { _id: req.params.id },
       {
         $set: {

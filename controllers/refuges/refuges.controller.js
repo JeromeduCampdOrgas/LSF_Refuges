@@ -1,4 +1,4 @@
-const ChienModel = require("../../models/chiens.model");
+const ChienModel = require("../../models/chien.model");
 
 //toutes les catégories
 module.exports.getAllRefuges = (req, res) => {
@@ -16,8 +16,7 @@ module.exports.getAllRefuges = (req, res) => {
 
 //getAllProducts of One Categorie
 module.exports.getAllRefugeChien = async (req, res) => {
-  //console.log("coucou");
-  await ChienModel.find({ refuges: req.params.refuge }, (err, docs) => {
+  await ChienModel.find({ refuge: req.params.refuge }, (err, docs) => {
     res.send(docs);
   });
 };

@@ -3,8 +3,8 @@ const express = require("express");
 //const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const userRoutes = require("./routes/user.routes");
-//const productRoutes = require("./routes/product.routes");
-//const categorieRoutes = require("./routes/categorie.routes");
+const chienRoutes = require("./routes/chien.routes");
+const refugeRoutes = require("./routes/refuge.routes");
 
 require("dotenv").config({ path: "./config/.env" });
 require("./config/db");
@@ -39,8 +39,8 @@ app.get("/jwtid", requireAuth, (req, res) => {
 
 //routes
 app.use("/api/user", userRoutes);
-//app.use("/api/product", productRoutes);
-//app.use("/api/categories", categorieRoutes);
+app.use("/api/chien", chienRoutes);
+app.use("/api/refuges", refugeRoutes);
 
 //server
 app.listen(process.env.PORT, () => {

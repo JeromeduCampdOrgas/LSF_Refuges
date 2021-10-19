@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const categorieController = require("../controllers/categorie.controller");
+const refugesController = require("../controllers/refuges/refuges.controller");
 
 ///Obtenir toutes les catégories
 router.get("/", refugesController.getAllRefuges);
