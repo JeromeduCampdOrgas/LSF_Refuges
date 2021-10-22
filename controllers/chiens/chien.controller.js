@@ -1,61 +1,33 @@
 const ChienModel = require("../../models/chien.model");
 const fs = require("fs"); //natif express ou node
-const { promisify } = require("util"); //natif express ou node
-const pipeline = promisify(require("stream").pipeline);
+//const { promisify } = require("util"); //natif express ou node
+//const pipeline = promisify(require("stream").pipeline);
 
-const ObjectID = require("mongoose").Types.ObjectId;
-const { v4: uuidv4 } = require("uuid");
-const { json } = require("body-parser");
-const uuid = uuidv4();
+//const ObjectID = require("mongoose").Types.ObjectId;
+//const { v4: uuidv4 } = require("uuid");
+////const { json } = require("body-parser");
+//const uuid = uuidv4();
 
-//Création produit
-module.exports.newChien = (req, res) => {
-  let fileName;
-  /*if (req.file !== null) {
-    
-    try {
-      if (
-        req.file.detectedMimeType != "image/jpg" &&
-        req.file.detectedMimeType != "image/png" &&
-        req.file.detectedMimeType != "image/jpeg"
-      )
-        throw Error("invalid file");
-    } catch (err) {
-      //const errors = uploadErrors(err);
-      //console.log(errors);
-      return res.status(201).json({ err: "y'a un probleme ici" });
-    }*/
+//Création chien
+module.exports.newChien = (req, res, next) => {
+  const chienObject = req.body;
+  //delete sauceObject._id;
 
-  fileName = req.body.name + ".jpg";
-
-  /*pipeline(
-    req.file.stream,
-    //console.log(req.file.stream)
-    fs.createWriteStream(
-      `${__dirname}/../../client/public/uploads/chiens/${fileName}`
-    )
-  );*/
-
-  const newChien = new ChienModel({
-    refuge: req.body.refuge,
-    name: req.body.name,
-    robe: req.body.robe,
-    imageUrl: req.file !== null ? "./uploads/chiens/" + fileName : "",
-    age: req.body.age,
-    description: req.body.description,
-    sexe: req.body.sexe,
-    chat: req.body.chat,
-    divers: req.body.divers,
-    carrousel: req.body.carrousel,
+  const chien = new ChienModel({
+    ...chienObject,
+    imageUrl: `${req.protocol}://${req.get("host")}/images/${
+      req.file.filename
+    }`,
   });
-
-  try {
-    const chien = newChien.save();
-    return res.status(201).json(chien);
-  } catch (err) {
-    res.status(200).send({ err: "raté" });
-  }
-  //}
+  //enregistrement en base
+  chien
+    .save()
+    .then(() => {
+      res.status(201).json({ message: "Post saved successfully!" });
+    })
+    .catch((error) => {
+      res.status(400).json({ error: error });
+    });
 };
 
 //get 1 produit
@@ -69,8 +41,8 @@ module.exports.getChien = (req, res) => {
 //tous les produits
 module.exports.getAllChiens = async (req, res) => {
   const chiens = await ChienModel.find();
-  /*produits.push(products);
-  console.log(produits);*/
+  /*produits.push(products);*/
+
   res.status(200).json(chiens);
 };
 

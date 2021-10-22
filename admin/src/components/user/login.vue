@@ -39,11 +39,106 @@
         </button>
       </div>
     </form>
-  </div></template
->
-
+  </div>
+</template>
 <script>
-export default {};
-</script>
+import store from "../../store/";
+import configAxios from "../../axios/configAxios";
 
-<style></style>
+//import utils from "../Utils/axios";
+
+import jwtDecode from "jwt-decode";
+export default {
+  name: "Connexion",
+  data() {
+    return {
+      dataConnexion: {
+        email: null,
+        password: null,
+      },
+      isVisible: false,
+      idUncorrect: false,
+      logged: false,
+    };
+  },
+  methods: {
+    connexion() {
+      //Obtenir tous les refuges
+      configAxios
+        .get("refuges")
+        .then((res) => {
+          store.dispatch("getRefuges", res.data);
+        })
+        .catch((err) => err);
+      //Obtenir tous les chiens
+      configAxios
+        .get("chien")
+        .then((res) => {
+          store.dispatch("getChiens", res.data);
+        })
+        .catch((err) => err);
+
+      //
+
+      const email = this.dataConnexion.email;
+      const password = this.dataConnexion.password;
+      const regexEmail = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/g;
+      const regexPassword = /^(?=.*\d).{4,10}$/; //chaîne de 4 à 10 caractères
+      if (
+        !email ||
+        !regexEmail.test(email) ||
+        !password ||
+        !regexPassword.test(password)
+      ) {
+        return (this.isVisible = true);
+      } else {
+        configAxios
+          .post(`user/login`, {
+            email: email,
+            password: password,
+          })
+          .then((result) => {
+            localStorage.setItem("token", result.data.token);
+            const decoded = jwtDecode(result.data.token);
+
+            this.logged = true;
+            store.dispatch("getUserLogged", this.logged);
+            store.dispatch("getUserInfos", decoded);
+
+            location.replace("/Accueil");
+          })
+
+          .catch(() => (this.idUncorrect = true));
+      }
+    },
+  },
+
+  computed: {
+    username() {
+      // We will see what `params` is shortly
+      return this.$route.params.username;
+    },
+
+    userLoggedIn() {
+      return store.state.userLoggedIn;
+    },
+    setUserName() {
+      return this.$store.state.userName;
+    },
+    setRefuges() {
+      return this.$store.state.categories;
+    },
+  },
+};
+</script>
+<style lang="scss">
+.signInForm {
+  width: 50%;
+  margin: auto;
+  padding: 10px;
+
+  & .form-div {
+    margin: 10px;
+  }
+}
+</style>

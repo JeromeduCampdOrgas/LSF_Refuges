@@ -1,6 +1,6 @@
 const express = require("express");
 //const bodyParser = require("body-parser");
-//const cookieParser = require("cookie-parser");
+const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const userRoutes = require("./routes/user.routes");
 const chienRoutes = require("./routes/chien.routes");
@@ -29,7 +29,7 @@ app.use(helmet());
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-//app.use(cookieParser());
+app.use(cookieParser());
 
 // jwt
 app.get("*", checkUser);

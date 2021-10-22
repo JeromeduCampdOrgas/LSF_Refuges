@@ -12,19 +12,10 @@ const chienSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    robe: { type: String },
-    emplacement: {
-      type: String,
-    },
     imageUrl: {
       type: String,
     },
-    description: {
-      type: String,
-    },
-    age: {
-      type: Number,
-    },
+    robe: { type: String },
 
     sexe: {
       type: String,
@@ -32,12 +23,17 @@ const chienSchema = new mongoose.Schema(
     chat: {
       type: String,
     },
-
-    divers: {
+    sante: {
       type: String,
     },
-    carrousel: {
-      type: [String],
+    age: {
+      type: Number,
+    },
+    emplacement: {
+      type: String,
+    },
+    description: {
+      type: String,
     },
   },
   {
