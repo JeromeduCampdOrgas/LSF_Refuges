@@ -1,6 +1,9 @@
 const router = require("express").Router();
 const chienController = require("../controllers/chiens/chien.controller");
+//const uploadController = require("../controllers/upload.controller");
+//const multer = require("multer");
 const multer = require("../middleware/multer-config");
+//const upload = multer();
 
 const fs = require("fs");
 
@@ -14,6 +17,9 @@ router.get("/:id", chienController.getChien);
 router.put("/:id", chienController.updateOneChien);
 ///delete 1 produit
 router.delete("/:id", chienController.deleteOneChien);
+
+///Créer un produit
+//router.post("/", multer, chienController.newChien);
 
 ///Créer un produit
 router.post("/", multer, chienController.newChien);

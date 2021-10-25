@@ -37,6 +37,8 @@
       </div>
 
       <div id="desktopMenu">
+        <router-link to="/formulaire">Formulaire</router-link>
+
         <router-link to="/" @click="deconnect" v-if="this.setUserLogged"
           >Déconnexion</router-link
         ><!---->

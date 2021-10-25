@@ -2,10 +2,7 @@
   <div>
     <div>
       <h1>Tous les Refuges</h1>
-      <!--{{ this.accueilPage }}
-      {{ this.accueilPage }}
-      
-      {{ this.setChiens }}-->
+      {{ this.imageUrl }}
       <button @click="test">test</button>
     </div>
     <div class="container">
@@ -17,8 +14,10 @@
         @click="pageProduits"
       >
         <div class="image">
-          <img :src="item.imageUrl" :alt="item.refuge" />
+          <img :src="this.imageUrl[0]" :alt="item.refuge" />
         </div>
+        <p>{{ item._id }}</p>
+        <p>{{ item.name }}</p>
         <p>{{ item.refuge }}</p>
       </div>
     </div>
@@ -41,14 +40,13 @@ export default {
     };
   },
   methods: {
-    test() {
+    test: function() {
       for (let refuge of this.$store.state.chiens) {
         const found = this.setChiens.find((element) => element == refuge);
         this.accueilPage.push(found);
         this.imageUrl.push(found.imageUrl);
         store.dispatch("getAccueilPage", this.accueilPage);
       }
-      console.log(this.accueilPage);
     },
     /*pageProduits(e) {
       //this.isVisible = !this.isVisible;
@@ -102,6 +100,10 @@ export default {
 </script>
 
 <style lang="scss">
+#test {
+  width: 50px;
+  height: 50px;
+}
 .container {
   display: flex;
   flex-direction: column;

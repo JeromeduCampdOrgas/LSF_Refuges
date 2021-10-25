@@ -11,8 +11,6 @@ const fs = require("fs"); //natif express ou node
 //Création chien
 module.exports.newChien = (req, res, next) => {
   const chienObject = req.body;
-  //delete sauceObject._id;
-
   const chien = new ChienModel({
     ...chienObject,
     imageUrl: `${req.protocol}://${req.get("host")}/images/${
@@ -29,7 +27,6 @@ module.exports.newChien = (req, res, next) => {
       res.status(400).json({ error: error });
     });
 };
-
 //get 1 produit
 module.exports.getChien = (req, res) => {
   //console.log("coucou");

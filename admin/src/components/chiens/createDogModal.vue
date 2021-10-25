@@ -5,11 +5,11 @@
       <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
       <h1>Nouveau chien</h1>
 
-      <form action="">
+      <form action="" enctype="multipart/form-data">
         <!--         Refuge           -->
         <div class="refuge">
           <label for="refuge">Refuge</label>
-          <select id="refuge" v-model="this.dataChien.refuge">
+          <select id="refuge" v-model="this.dataChien.refuge" v-if="!ajout">
             <option
               v-for="refuge in this.refuges"
               :key="refuge"
@@ -17,6 +17,30 @@
               >{{ refuge }}</option
             >
           </select>
+
+          <input
+            v-if="ajout"
+            type="text"
+            name="refuge"
+            placeholder="test"
+            v-model="this.dataChien.refuge"
+          />
+          <button
+            class="buttonOption ajoutSuppr"
+            id="new-refuge"
+            v-if="!ajout"
+            @click="clickAjout"
+          >
+            +
+          </button>
+          <button
+            class="buttonOption ajoutSuppr"
+            id="escape-newrefuge"
+            v-if="ajout"
+            @click="clickAjout"
+          >
+            -
+          </button>
         </div>
         <!--        Nom du chien           -->
         <div>
@@ -86,7 +110,6 @@
           <button class="btn-danger" @click="toggleModale, erreur">
             Annuler
           </button>
-          <button @click="test">Test</button>
         </div>
       </form>
     </div>
@@ -111,135 +134,42 @@ export default {
         age: "",
         chat: "",
         sante: "",
-        divers: "",
       },
       refuges: store.state.refuges,
+      ajout: false,
     };
   },
   methods: {
-    test() {
-      console.log("coucou");
-      let refuge = this.dataChien.refuge;
-      let name = this.dataChien.name;
-      let image = this.dataChien.imageUrl;
-      let robe = this.dataChien.robe;
-      let sexe = this.dataChien.sexe;
-      let chat = this.dataChien.chat;
-      let sante = this.dataChien.sante;
-      let age = this.dataChien.age;
-      let emplacement = this.dataChien.emplacement;
-      let description = this.dataChien.description;
-
-      const newChien = new FormData();
-      newChien.set("refuge", refuge); //this.dataChien.refuge);
-      newChien.set("name", name); //this.dataChien.name);
-      newChien.set("imageUrl", image);
-      newChien.set("robe", robe); //this.dataChien.robe);
-      newChien.set("sexe", sexe); // this.dataChien.sexe);
-      newChien.set("chat", chat); // this.dataChien.chat);
-      newChien.set("sante", sante); //this.dataChien.sante);
-      newChien.set("age", age); //this.dataChien.age);
-      newChien.set("emplacement", emplacement);
-      newChien.set("description", description);
-
-      configAxios.post("chien", newChien).then(() => {
-        configAxios.get("chien").then((res) => {
-          console.log(res.data);
-          store.dispatch("getChiens", res.data);
-        });
-      });
-    },
     onFileChange(e) {
       this.dataChien.imageUrl = e.target.files[0];
-      //console.log(this.dataChien.imageUrl);
+    },
+    clickAjout(e) {
+      this.ajout = !this.ajout;
+      e.preventDefault();
     },
     createChien: function(e) {
       //accès au dom
-      let refuge = this.dataChien.refuge;
-      let name = document.getElementById("nom").value;
-      let description = document.getElementById("description").value;
-      let sexe = document.getElementById("sexe").value;
-      let age = document.getElementById("age").value;
-      let robe = document.getElementById("robe").value;
-      let chat = document.getElementById("chat").value;
-      let sante = document.getElementById("sante").value;
+      console.log("coucou");
 
-      let image = document.getElementById("image").value;
-      console.log(refuge);
-      console.log(name);
-      console.log(description);
-      console.log(sexe);
-      console.log(age);
-      console.log(robe);
-      console.log(chat);
-      console.log(sante);
-      console.log(image);
-      //accès catégorie
-      //1°partie, on est dans le mode ajoutr de catégorie
-      /**--------------------------------------------------------------------------- */
-      /*if (this.ajout) {
-        let category = document.getElementById("category");
-        //si est vide
-        if (!category) {
-          this.unvalable = !this.unvalable;
-          //si la catégorie existe déjà
-        } else {
-          for (let i = 0; i < this.categories.length; i++) {
-            //console.log(category.value);
-            if (this.categories[i] == category.value) {
-              this.categorieExiste = !this.categorieExiste;
-            }
-          }
-        }
-      } else {
-        let category = document.getElementById("optionCategory");
-        if (!category) {
-          this.unvalable = !this.unvalable;
-        }
-      }*/
-      /**--------------------------------------------------------------------------- */
-      /*if (!name || !description || !refuge || !stock || !image) {
-        this.unvalable = !this.unvalable;
-        e.preventDefault();
-      } else {
-        this.unvalable = false;
-        this.categorieExiste = false;
-        //recherche des valeurs des options
-        let elements = document.getElementsByClassName("optionValue");
-        this.colorsArray = [];
-        for (let i = 0; i < elements.length; i++) {
-          let color = elements[i].value;
-          this.colorsArray.push(color);
-          this.dataProduct.colors.push(elements[i].value);
-        }*/
-      /*const newChien = new FormData();
-      newChien.set("name", name); //this.dataChien.name);
-      newChien.set("refuge", refuge); //this.dataChien.refuge);
-      newChien.set("description", description); //this.dataChien.description);
-      newChien.set("sexe", sexe); // this.dataChien.sexe);
-      newChien.set("age", age); //this.dataChien.age);
-      newChien.set("robe", robe); //this.dataChien.robe);
-      newChien.set("chat", chat); // this.dataChien.chat);
-      newChien.set("sante", sante); //this.dataChien.sante);
-      newChien.set("divers", divers); //this.dataChien.divers);
-      /*********************************************************************** */
-
-      //newChien.set("imageUrl", image); //this.dataChien.imageUrl);
+      const newChien = new FormData();
+      newChien.set("name", this.dataChien.name);
+      newChien.set("refuge", this.dataChien.refuge);
+      newChien.set("description", this.dataChien.description);
+      newChien.set("sexe", this.dataChien.sexe);
+      newChien.set("age", this.dataChien.age);
+      newChien.set("robe", this.dataChien.robe);
+      newChien.set("chat", this.dataChien.chat);
+      newChien.set("sante", this.dataChien.sante);
+      newChien.set("imageUrl", this.dataChien.imageUrl);
 
       //requête Axios
-      //configAxios.post("/chien", newChien).then(() =>
-      //on récupére tous les produits en base
-      //configAxios.get("chien").then((res) => {
-      //on met le store à jour
-      //store.dispatch("getChiens", res.data);
-      /*if (this.ajout) {
-              this.categories.push(this.dataProduct.categorie);
-              store.dispatch("getCategories", this.categories);
-            }*/
-      //this.$router.push("/creation");
-      //})
-      //);
-      //}
+      configAxios.post("/chien", newChien).then(() =>
+        //on récupére tous les produits en base
+        configAxios.get("chien").then((res) => {
+          //on met le store à jour
+          store.dispatch("getChiens", res.data);
+        })
+      );
 
       e.preventDefault();
     },
@@ -300,10 +230,23 @@ export default {
         margin-right: 15px;
       }
       & input {
-        width: 65%;
+        width: 55%;
       }
       & select {
         width: 55%;
+      }
+      & .buttonOption {
+        margin-left: 5px;
+        width: 30px;
+        text-align: center;
+        border-radius: 5px;
+        font-weight: bold;
+      }
+      & #new-refuge {
+        background-color: greenyellow;
+      }
+      & #escape-newrefuge {
+        background-color: red;
       }
     }
     & #admin {

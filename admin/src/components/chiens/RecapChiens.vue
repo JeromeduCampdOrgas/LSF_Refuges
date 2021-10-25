@@ -20,7 +20,7 @@
           </tr>
         </thead>
         <tbody>
-          <tr v-for="elem in item.data" :key="elem">
+          <tr v-for="elem in this.recap" :key="elem">
             <td class="image"><img :src="elem.imageUrl" alt="" /></td>
             <td>{{ elem.name }}</td>
             <td>{{ elem.robe }}</td>
@@ -62,6 +62,7 @@ export default {
     return {
       chiens: store.state.chiens,
       refuges: store.state.refuges,
+      recap: store.state.recapchiens,
     };
   },
   components: {},
