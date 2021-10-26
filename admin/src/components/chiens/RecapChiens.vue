@@ -7,6 +7,7 @@
       <table>
         <thead>
           <tr class="libelle">
+            <td>Statut</td>
             <td>Image</td>
             <td>Name</td>
             <td>Robe</td>
@@ -21,6 +22,7 @@
         </thead>
         <tbody>
           <tr v-for="elem in this.recap" :key="elem">
+            <td>{{ elem.statut }}</td>
             <td class="image"><img :src="elem.imageUrl" alt="" /></td>
             <td>{{ elem.name }}</td>
             <td>{{ elem.robe }}</td>
@@ -79,7 +81,7 @@ export default {
   methods: {
     supprimer: function(e) {
       let chienToDelete =
-        e.target.parentNode.parentNode.childNodes[1].innerHTML;
+        e.target.parentNode.parentNode.childNodes[2].innerHTML;
       let refuge = this.refuges[0].refuge;
       for (let i = 0; i < this.recap.length; i++) {
         if (this.recap[i].name == chienToDelete) {
@@ -112,6 +114,9 @@ table {
   & thead {
     font-weight: bold;
     background: linear-gradient(rgb(243, 233, 241), #9667da);
+  }
+  & .icons {
+    cursor: pointer;
   }
 }
 table,

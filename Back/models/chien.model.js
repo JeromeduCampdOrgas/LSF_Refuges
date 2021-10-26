@@ -35,6 +35,9 @@ const chienSchema = new mongoose.Schema(
     description: {
       type: String,
     },
+    statut: {
+      type: String,
+    },
   },
   {
     timestamps: true,

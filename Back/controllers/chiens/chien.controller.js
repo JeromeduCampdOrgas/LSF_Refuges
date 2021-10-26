@@ -58,7 +58,6 @@ module.exports.updateOneChien = async (req, res) => {
           chat: req.body.chat,
           robe: req.body.robe,
           emplacement: req.body.emplacement,
-          divers: req.body.divers,
         },
       },
       { new: true, upsert: true, setDefaultsOnInsert: true },

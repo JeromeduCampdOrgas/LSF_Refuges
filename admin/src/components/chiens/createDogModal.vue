@@ -110,6 +110,31 @@
             v-model="this.dataChien.description"
           ></textarea>
         </div>
+        <!--------------------------------------------------------------->
+        <div>
+          <input
+            class="statut"
+            type="radio"
+            id="reserved"
+            name="chien"
+            value="Réservé"
+            checked
+            @click="test"
+          />
+          <label for="reserved">Réservé</label>
+        </div>
+        <div>
+          <input
+            class="statut"
+            type="radio"
+            id="optioned"
+            name="chien"
+            value="Optionné"
+            @click="test"
+          />
+          <label for="optioned">Optionné</label>
+        </div>
+        <!----------------------------------------------------------------------->
 
         <div id="buttons">
           <button class="btn-success" @click="createChien">Valider</button>
@@ -142,6 +167,7 @@ export default {
         age: "",
         chat: "",
         sante: "",
+        statut: "",
       },
       refuges: store.state.refuges,
       ajout: false,
@@ -150,6 +176,16 @@ export default {
   },
   components: {},
   methods: {
+    test() {
+      let statut = document.getElementsByClassName("statut");
+      for (let i = 0; i < statut.length; i++) {
+        if (statut[i].checked) {
+          this.dataChien.statut = statut[i].value;
+          console.log("statut: " + this.dataChien.statut);
+        }
+      }
+      console.log(statut);
+    },
     capitalize(e) {
       let string = e.target.value;
       let String = string.toUpperCase();
@@ -181,8 +217,15 @@ export default {
       e.preventDefault();
     },
     createChien: function() {
-      //accès au dom
       let refuge = this.dataChien.refuge;
+      //Réservé / Optionné
+      let statut = document.getElementsByClassName("statut");
+      for (let i = 0; i < statut.length; i++) {
+        if (statut[i].checked) {
+          this.dataChien.statut = statut[i].value;
+          console.log("statut: " + this.dataChien.statut);
+        }
+      }
       const newChien = new FormData();
       newChien.set("name", this.dataChien.name);
       newChien.set("refuge", this.dataChien.refuge);
@@ -193,6 +236,7 @@ export default {
       newChien.set("chat", this.dataChien.chat);
       newChien.set("sante", this.dataChien.sante);
       newChien.set("imageUrl", this.dataChien.imageUrl);
+      newChien.set("statut", this.dataChien.statut);
 
       //requête Axios
       configAxios.post("/chien", newChien).then(() =>
