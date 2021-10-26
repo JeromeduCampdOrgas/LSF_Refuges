@@ -1,11 +1,11 @@
 <template>
-  <div class="bloc-modale" v-if="createDogRevele">
+  <div class="bloc-modale" v-if="createDogRevele" data-backdrop="static">
     <div class="overlay" @click="toggleModale"></div>
     <div class="modale ">
       <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
       <h1>Nouveau chien</h1>
 
-      <form action="" enctype="multipart/form-data">
+      <form action="" enctype="multipart/form-data" id="formulaire">
         <!--         Refuge           -->
         <div class="refuge">
           <label for="refuge">Refuge</label>
@@ -22,8 +22,8 @@
             v-if="ajout"
             type="text"
             name="refuge"
-            placeholder="test"
             v-model="this.dataChien.refuge"
+            @blur="capitalize"
           />
           <button
             class="buttonOption ajoutSuppr"
@@ -45,7 +45,13 @@
         <!--        Nom du chien           -->
         <div>
           <label for="name">Nom du chien</label>
-          <input type="text" id="nom" v-model="this.dataChien.name" />
+          <input
+            type="text"
+            id="nom"
+            name="name"
+            v-model="this.dataChien.name"
+            @blur="capitalize"
+          />
         </div>
         <!--         Image           -->
         <div>
@@ -94,7 +100,7 @@
           />
         </div>
         <!--         Description           -->
-        <div>
+        <div id="areaDescription">
           <label for="description">Description / Commentaires</label>
           <textarea
             name="description"
@@ -108,7 +114,7 @@
         <div id="buttons">
           <button class="btn-success" @click="createChien">Valider</button>
           <button class="btn-danger" @click="toggleModale, erreur">
-            Annuler
+            Fermer
           </button>
         </div>
       </form>
@@ -119,8 +125,10 @@
 <script>
 import store from "../../store/index";
 import configAxios from "../../axios/configAxios";
+
 export default {
   name: "dogModale",
+
   props: ["createDogRevele", "toggleModale"],
   data() {
     return {
@@ -137,9 +145,34 @@ export default {
       },
       refuges: store.state.refuges,
       ajout: false,
+      showAlert: false,
     };
   },
+  components: {},
   methods: {
+    capitalize(e) {
+      let string = e.target.value;
+      let String = string.toUpperCase();
+      e.target.value = String;
+      switch (e.target.name) {
+        case "refuge":
+          if (this.refuges.indexOf(this.dataChien.refuge) !== -1) {
+            alert("Le refuge existe déjà!");
+            e.target.value = "";
+            this.ajout = false;
+          } else {
+            this.refuges.push(String);
+            this.dataChien.refuge = String;
+          }
+
+          break;
+        case "name":
+          this.dataChien.name = String;
+          break;
+      }
+      console.log(this.dataChien.refuge);
+      console.log(this.dataChien.name);
+    },
     onFileChange(e) {
       this.dataChien.imageUrl = e.target.files[0];
     },
@@ -147,10 +180,9 @@ export default {
       this.ajout = !this.ajout;
       e.preventDefault();
     },
-    createChien: function(e) {
+    createChien: function() {
       //accès au dom
-      console.log("coucou");
-
+      let refuge = this.dataChien.refuge;
       const newChien = new FormData();
       newChien.set("name", this.dataChien.name);
       newChien.set("refuge", this.dataChien.refuge);
@@ -165,13 +197,19 @@ export default {
       //requête Axios
       configAxios.post("/chien", newChien).then(() =>
         //on récupére tous les produits en base
-        configAxios.get("chien").then((res) => {
-          //on met le store à jour
-          store.dispatch("getChiens", res.data);
-        })
+        configAxios
+          .get("chien")
+          .then((res) => {
+            store.dispatch("getChiens", res.data);
+          })
+          .then(() => {
+            configAxios.get(`refuges/${refuge}`).then((res) => {
+              store.dispatch("getRecapChiens", res.data);
+            });
+          })
       );
 
-      e.preventDefault();
+      location.replace(refuge);
     },
   },
 };
@@ -188,7 +226,6 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 1px black solid;
 
   & .overlay {
     background: rgba(0, 0, 0, 0.5);
@@ -232,6 +269,7 @@ export default {
       & input {
         width: 55%;
       }
+
       & select {
         width: 55%;
       }
@@ -249,6 +287,9 @@ export default {
         background-color: red;
       }
     }
+    & #areaDescription {
+      display: flex;
+    }
     & #admin {
       background: #fff;
       width: 75%;
@@ -259,9 +300,11 @@ export default {
     }
     & #buttons {
       margin: auto;
+      text-align: center;
       & .btn-success,
       .btn-danger {
         border-radius: 5px;
+
         margin: 30px;
       }
     }

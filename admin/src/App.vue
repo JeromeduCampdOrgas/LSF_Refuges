@@ -14,7 +14,7 @@
         <router-link to="/" @click="deconnect" v-if="this.setUserLogged"
           >Déconnexion</router-link
         >
-        <router-link to="/AllProducts">Tous les produits</router-link>
+        <router-link to="/AllProducts">Accueil</router-link>
 
         <router-link
           to="/recapitulatif"
@@ -23,7 +23,7 @@
           >Récapitulatif</router-link
         ><!---->
         <router-link
-          to="/creation"
+          to="/"
           v-if="this.userLoggedIn.isAdmin"
           @click="toggleModale"
           >Nouveau chien</router-link
@@ -37,13 +37,11 @@
       </div>
 
       <div id="desktopMenu">
-        <router-link to="/formulaire">Formulaire</router-link>
-
         <router-link to="/" @click="deconnect" v-if="this.setUserLogged"
           >Déconnexion</router-link
         ><!---->
         <router-link to="/Accueil" v-if="this.setUserLogged"
-          >Tous les refuges</router-link
+          >Accueil</router-link
         ><!---->
 
         <router-link
@@ -52,13 +50,11 @@
           v-if="this.userLoggedIn.isAdmin"
           >Récapitulatif</router-link
         ><!---->
+        <span v-if="this.userLoggedIn.isAdmin" @click="toggleModale"
+          >Nouveau chien</span
+        >
 
-        <router-link
-          to="/creation"
-          v-if="this.userLoggedIn.isAdmin"
-          @click="toggleModale"
-          >Nouveau chien</router-link
-        ><!---->
+        <!---->
         <router-link
           to="/utilisateurs"
           @click="getusers"
@@ -80,7 +76,9 @@
 import Header from "./components/header.vue";
 import store from "./store/index";
 import dogModale from "./components/chiens/createDogModal.vue";
+
 import configAxios from "../src/axios/configAxios";
+
 //import Footer from "./components/footer.vue";
 
 export default {
@@ -99,6 +97,7 @@ export default {
   components: {
     Header,
     dogModale,
+
     //Footer,
   },
   methods: {
@@ -115,6 +114,7 @@ export default {
     toggleClose: function() {
       this.createDogRevele = false;
     },
+
     recapitulatif: async function() {
       for (let i = 0; i < this.$store.state.refuges.length; i++) {
         let refuge = new Array();
@@ -173,18 +173,22 @@ li {
   text-align: center;
 }
 #nav {
-  padding: 30px;
-
-  a {
+  padding: 5px;
+  background: linear-gradient(rgb(243, 233, 241), #9667da);
+  & a,
+  span {
     text-decoration: none;
     font-weight: bold;
     color: #2c3e50;
-    background: linear-gradient(rgb(243, 233, 241), #9667da);
-    margin: auto 15px;
+    margin: auto 25px;
     padding: 5px;
     &.router-link-exact-active {
       color: white;
     }
+  }
+  & a:hover,
+  span:hover {
+    background: #ddd;
   }
 
   & #mobileMenu {

@@ -15,8 +15,8 @@ module.exports.getAllRefuges = (req, res) => {
 };
 
 //getAllProducts of One Categorie
-module.exports.getAllRefugeChien = async (req, res) => {
-  await ChienModel.find({ refuge: req.params.refuge }, (err, docs) => {
+module.exports.getAllRefugeChien = (req, res) => {
+  ChienModel.find({ refuge: req.params.refuge }, (err, docs) => {
     res.send(docs);
   });
 };

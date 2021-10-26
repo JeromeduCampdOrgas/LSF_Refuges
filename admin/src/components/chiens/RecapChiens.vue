@@ -1,9 +1,8 @@
 <template>
   <div>
     <h1>Récapitulatif</h1>
-    {{ this.refuges }}
 
-    <div v-for="item in this.refuges" :key="item">
+    <div>
       <!--<p>{{ item.data[0].refuge }}</p>-->
       <table>
         <thead>
@@ -17,6 +16,7 @@
             <td>Age</td>
             <td>Emplacement</td>
             <td>commentaires</td>
+            <td>Actions</td>
           </tr>
         </thead>
         <tbody>
@@ -33,6 +33,14 @@
             <td>
               <img
                 class="icons"
+                src="../../../public/img/eye.svg"
+                alt="see"
+                title="Voir"
+                width="30"
+                @click="voirFiche"
+              />
+              <img
+                class="icons"
                 src="../../../public/img/edit.svg"
                 alt="edit"
                 title="Modifier"
@@ -45,7 +53,7 @@
                 alt="trash"
                 title="Supprimer"
                 width="30"
-                @click="trash"
+                @click="supprimer"
               />
             </td>
           </tr>
@@ -56,6 +64,7 @@
 </template>
 <script>
 import store from "../../store/index";
+import configAxios from "../../axios/configAxios";
 
 export default {
   data() {
@@ -63,9 +72,59 @@ export default {
       chiens: store.state.chiens,
       refuges: store.state.refuges,
       recap: store.state.recapchiens,
+      chienId: "",
     };
   },
   components: {},
+  methods: {
+    supprimer: function(e) {
+      let chienToDelete =
+        e.target.parentNode.parentNode.childNodes[1].innerHTML;
+      let refuge = this.refuges[0].refuge;
+      for (let i = 0; i < this.recap.length; i++) {
+        if (this.recap[i].name == chienToDelete) {
+          this.chienId = this.recap[i]._id;
+        }
+      }
+      configAxios
+        .delete(`chien/${this.chienId}`)
+        .then(() =>
+          configAxios
+            .get(`chien`)
+            .then((res) =>
+              store
+                .dispatch("getChiens", res.data)
+                .then(() =>
+                  configAxios
+                    .get(`refuges/${refuge}`)
+                    .then((res) => store.dispatch("getRecapChiens", res.data))
+                )
+            )
+        );
+      e.target.parentNode.parentNode.remove();
+    },
+  },
 };
 </script>
-<style scoped></style>
+<style lang="scss">
+table {
+  width: 95%;
+  & thead {
+    font-weight: bold;
+    background: linear-gradient(rgb(243, 233, 241), #9667da);
+  }
+}
+table,
+td {
+  border: 1px black solid;
+  border-collapse: collapse;
+}
+.image {
+  width: 100px;
+  & img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+</style>

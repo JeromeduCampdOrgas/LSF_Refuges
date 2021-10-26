@@ -2,8 +2,6 @@
   <div>
     <div>
       <h1>Tous les Refuges</h1>
-      {{ this.imageUrl }}
-      <button @click="test">test</button>
     </div>
     <div class="container">
       <!--v-show="isVisible"-->
@@ -11,22 +9,22 @@
         class="product-categorie"
         v-for="item of this.accueilPage"
         v-bind:key="item"
-        @click="pageProduits"
+        @click="pageRecap"
       >
         <div class="image">
-          <img :src="this.imageUrl[0]" :alt="item.refuge" />
+          <img :src="item.imageUrl" :alt="item.refuge" />
         </div>
-        <p>{{ item._id }}</p>
-        <p>{{ item.name }}</p>
+
         <p>{{ item.refuge }}</p>
       </div>
     </div>
+    {{ this.refuges }}
   </div>
 </template>
 
 <script>
 import store from "../../store/index";
-//import configAxios from "../../axios/configAxios";
+import configAxios from "../../axios/configAxios";
 
 export default {
   data() {
@@ -40,37 +38,20 @@ export default {
     };
   },
   methods: {
-    test: function() {
-      for (let refuge of this.$store.state.chiens) {
-        const found = this.setChiens.find((element) => element == refuge);
+    pageAccueil() {
+      for (let refuge of this.refuges) {
+        const found = this.chiens.find((element) => element.refuge == refuge);
         this.accueilPage.push(found);
         this.imageUrl.push(found.imageUrl);
         store.dispatch("getAccueilPage", this.accueilPage);
       }
     },
-    /*pageProduits(e) {
-      //this.isVisible = !this.isVisible;
-      let categorie = e.target.alt;
-      configAxios
-        .get(`categories/${categorie}`)
-        .then((res) => {
-          console.log(res.data);
-          store.dispatch("getPageProduits", res.data);
-          store.dispatch("getSelectedCategorie", categorie);
-          this.$router.push(categorie);
-          //return store.state.selectedCategorie;
-        })
-        .catch((err) => err);
-    },*/
-    pageAccueil() {
-      for (let refuge of this.setRefuges) {
-        const found = this.setChiens.find(
-          (element) => element.refuge == refuge
-        );
-        this.accueilPage.push(found);
-        this.imageUrl.push(found.imageUrl);
-        store.dispatch("getAccueilPage", this.accueilPage);
-      }
+    pageRecap(e) {
+      let refuge = e.target.alt;
+      configAxios.get(`refuges/${refuge}`).then((res) => {
+        store.dispatch("getRecapChiens", res.data);
+        this.$router.push(refuge);
+      });
     },
   },
   beforeMount() {

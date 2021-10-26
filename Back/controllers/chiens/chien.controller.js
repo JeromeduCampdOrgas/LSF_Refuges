@@ -74,14 +74,14 @@ module.exports.updateOneChien = async (req, res) => {
 };
 //delete 1produit
 module.exports.deleteOneChien = async (req, res) => {
-  if (!ObjectID.isValid(req.params.id)) {
+  /*if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send("ID unknown : " + req.params.id);
-  } else {
-    try {
-      await ChienModel.deleteOne({ _id: req.params.id }).exec();
-      res.status(200).json({ message: "Successfully deleted. " });
-    } catch (err) {
-      return res.status(500).json({ message: err });
-    }
+  } else {*/
+  try {
+    await ChienModel.deleteOne({ _id: req.params.id }).exec();
+    res.status(200).json({ message: "Successfully deleted. " });
+  } catch (err) {
+    return res.status(500).json({ message: err });
+    //}
   }
 };

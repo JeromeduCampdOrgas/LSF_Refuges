@@ -25,17 +25,9 @@ const routes = [
     },
   },
   {
-    path: "/recapitulatif",
+    path: "/:refuge",
     component: () =>
       import(/* webpackChunkName: "login" */ "../views/RecapChiens.vue"),
-    beforeEnter: (to, from, next) => {
-      localStorage.getItem("token") ? next() : next({ name: "Login" });
-    },
-  },
-  {
-    path: "/formulaire",
-    component: () =>
-      import(/* webpackChunkName: "login" */ "../views/Formulaire.vue"),
     beforeEnter: (to, from, next) => {
       localStorage.getItem("token") ? next() : next({ name: "Login" });
     },
