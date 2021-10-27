@@ -1,7 +1,9 @@
 <template>
   <div class="b-container">
     <Header />
+
     <div id="nav">
+      {{ this.updateDogRevele }}
       <div id="burger" @click="menuvisibility">
         <img
           class="icons"
@@ -44,12 +46,6 @@
           >Accueil</router-link
         ><!---->
 
-        <!--<router-link
-          to="/recapitulatif"
-          @click="recapitulatif"
-          v-if="this.userLoggedIn.isAdmin"
-          >Récapitulatif</router-link
-        >--><!---->
         <span v-if="this.userLoggedIn.isAdmin" @click="toggleModale"
           >Nouveau chien</span
         >

@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Récapitulatif {{ this.selectedRefuge }}</h1>
-
+    {{ this.updateDogRevele }}
     <div>
       <!--<p>{{ item.data[0].refuge }}</p>-->
       <table>
@@ -47,7 +47,7 @@
                 alt="edit"
                 title="Modifier"
                 width="30"
-                @click="modifier"
+                @click="updateModale"
               />
               <img
                 class="icons"
@@ -63,12 +63,18 @@
       </table>
     </div>
     <button @click="test">test</button>
+
+    <updateModal
+      v-bind:updateDogRevele="updateDogRevele"
+      v-bind:toggleUpdate="toggleUpdate"
+      v-bind:updateClose="updateClose"
+    ></updateModal>
   </div>
 </template>
 <script>
 import store from "../../store/index";
 import configAxios from "../../axios/configAxios";
-
+import updateModal from "./updateDogModal.vue";
 export default {
   data() {
     return {
@@ -79,10 +85,17 @@ export default {
       chienId: "",
       chienImage: "",
       page: "",
+      updateDogRevele: false,
     };
   },
-  components: {},
+  components: { updateModal },
   methods: {
+    updateModale: function() {
+      this.updateDogRevele = !this.updateDogRevele;
+    },
+    updateClose: function() {
+      this.updateDogRevele = false;
+    },
     test() {
       const queryString = window.location.pathname;
       console.log(queryString);

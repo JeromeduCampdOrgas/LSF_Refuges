@@ -37,7 +37,23 @@ module.exports.getAllChiens = async (req, res) => {
 };
 
 //update 1 produit
-module.exports.updateOneChien = async (req, res) => {
+exports.updateOneChien = (req, res, next) => {
+  const chienObject = req.file
+    ? {
+        ...JSON.parse(req.body.chien),
+        imageUrl: `${req.protocol}://${req.get("host")}/images/${
+          req.file.filename
+        }`,
+      }
+    : { ...req.body };
+  ChienModel.updateOne(
+    { _id: req.params.id },
+    { ...chienObject, _id: req.params.id }
+  )
+    .then(() => res.status(200).json({ message: "Objet modifié !" }))
+    .catch((error) => res.status(400).json({ error }));
+};
+/*module.exports.updateOneChien = async (req, res) => {
   if (!ObjectID.isValid(req.params.id)) {
     return res.status(400).send("ID unknown : " + req.params.id);
   } else {
@@ -63,7 +79,7 @@ module.exports.updateOneChien = async (req, res) => {
       }
     );
   }
-};
+};*/
 //delete 1 chien
 
 exports.deleteOneChien = (req, res, next) => {

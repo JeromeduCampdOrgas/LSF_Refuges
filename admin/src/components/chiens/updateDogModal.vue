@@ -1,9 +1,9 @@
 <template>
-  <div class="bloc-modale" v-if="createDogRevele" data-backdrop="static">
-    <div class="overlay" @click="toggleModale"></div>
+  <div class="bloc-modale" v-if="updateDogRevele" data-backdrop="static">
+    <div class="overlay" @click="updateClose"></div>
     <div class="modale ">
-      <div class="btn-modale btn btn-danger" @click="toggleModale">X</div>
-      <h1>Nouveau chien</h1>
+      <div class="btn-modale btn btn-danger" @click="updateClose">X</div>
+      <h1>Modifier</h1>
 
       <form action="" enctype="multipart/form-data" id="formulaire">
         <!--         Refuge           -->
@@ -165,7 +165,7 @@
         <!----------------------------------------------------------------------->
         <div id="buttons">
           <button class="btn-success" @click="createChien">Valider</button>
-          <button class="btn-danger" @click="toggleModale, erreur">
+          <button class="btn-danger" @click="updateClose, erreur">
             Fermer
           </button>
         </div>
@@ -176,12 +176,10 @@
 
 <script>
 import store from "../../store/index";
-import configAxios from "../../axios/configAxios";
-
+//import configAxios from "../../axios/configAxios";
 export default {
-  name: "dogModale",
-
-  props: ["createDogRevele", "toggleModale"],
+  name: "updateModale",
+  props: ["updateDogRevele", "updateClose"],
   data() {
     return {
       dataChien: {
@@ -203,89 +201,6 @@ export default {
       ajout: false,
       showAlert: false,
     };
-  },
-  components: {},
-  methods: {
-    imagesupp() {
-      let photos = document.getElementById("photos");
-      let imgInput = document.createElement("input");
-      imgInput.setAttribute("class", "photo");
-      imgInput.setAttribute("type", "file");
-      imgInput.setAttribute("name", "photo");
-      //imgInput.setAttribute("style", {margin-bottom:10px});
-      photos.appendChild(imgInput);
-    },
-    capitalize(e) {
-      let string = e.target.value;
-      let String = string.toUpperCase();
-      e.target.value = String;
-      switch (e.target.name) {
-        case "refuge":
-          if (this.refuges.indexOf(this.dataChien.refuge) !== -1) {
-            alert("Le refuge existe déjà!");
-            e.target.value = "";
-            this.ajout = false;
-          } else {
-            this.refuges.push(String);
-            this.dataChien.refuge = String;
-          }
-
-          break;
-        case "name":
-          this.dataChien.name = String;
-          break;
-      }
-      console.log(this.dataChien.refuge);
-      console.log(this.dataChien.name);
-    },
-    onFileChange(e) {
-      this.dataChien.imageUrl = e.target.files[0];
-    },
-    clickAjout(e) {
-      this.ajout = !this.ajout;
-      e.preventDefault();
-    },
-    createChien: function() {
-      let refuge = this.dataChien.refuge;
-      //Réservé / Optionné
-      let statut = document.getElementsByClassName("statut");
-      for (let i = 0; i < statut.length; i++) {
-        if (statut[i].checked) {
-          this.dataChien.statut = statut[i].value;
-          console.log("statut: " + this.dataChien.statut);
-        }
-      }
-      const newChien = new FormData();
-      newChien.set("name", this.dataChien.name);
-      newChien.set("refuge", this.dataChien.refuge);
-      newChien.set("description", this.dataChien.description);
-      newChien.set("sexe", this.dataChien.sexe);
-      newChien.set("age", this.dataChien.age);
-      newChien.set("robe", this.dataChien.robe);
-      newChien.set("chat", this.dataChien.chat);
-      newChien.set("sante", this.dataChien.sante);
-      newChien.set("imageUrl", this.dataChien.imageUrl);
-      newChien.set("statut", this.dataChien.statut);
-      newChien.set("emplacement", this.dataChien.emplacement);
-      newChien.set("puce", this.dataChien.puce);
-
-      //requête Axios
-      configAxios.post("/chien", newChien).then(() =>
-        //on récupére tous les produits en base
-        configAxios
-          .get("chien")
-          .then((res) => {
-            store.dispatch("getChiens", res.data);
-          })
-          .then(() => {
-            configAxios.get(`refuges/${refuge}`).then((res) => {
-              store.dispatch("getRecapChiens", res.data);
-            });
-          })
-      );
-
-      location.replace(refuge);
-    },
   },
 };
 </script>
