@@ -18,7 +18,6 @@
         <p>{{ item.refuge }}</p>
       </div>
     </div>
-    {{ this.refuges }}
   </div>
 </template>
 
@@ -48,6 +47,7 @@ export default {
     },
     pageRecap(e) {
       let refuge = e.target.alt;
+      store.dispatch("getSelectedRefuge", refuge);
       configAxios.get(`refuges/${refuge}`).then((res) => {
         store.dispatch("getRecapChiens", res.data);
         this.$router.push(refuge);

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Récapitulatif</h1>
+    <h1>Récapitulatif {{ this.selectedRefuge }}</h1>
 
     <div>
       <!--<p>{{ item.data[0].refuge }}</p>-->
@@ -13,9 +13,9 @@
             <td>Robe</td>
             <td>Sexe</td>
             <td>Test chat</td>
-            <td>santé</td>
+            <td>Santé</td>
             <td>Age</td>
-            <td>Emplacement</td>
+            <td>Box</td>
             <td>commentaires</td>
             <td>Actions</td>
           </tr>
@@ -47,7 +47,7 @@
                 alt="edit"
                 title="Modifier"
                 width="30"
-                @click="edit"
+                @click="modifier"
               />
               <img
                 class="icons"
@@ -62,6 +62,7 @@
         </tbody>
       </table>
     </div>
+    <button @click="test">test</button>
   </div>
 </template>
 <script>
@@ -73,37 +74,77 @@ export default {
     return {
       chiens: store.state.chiens,
       refuges: store.state.refuges,
+      selectedRefuge: store.state.selectedRefuge,
       recap: store.state.recapchiens,
       chienId: "",
+      chienImage: "",
+      page: "",
     };
   },
   components: {},
   methods: {
+    test() {
+      const queryString = window.location.pathname;
+      console.log(queryString);
+      console.log(window.location.pathname);
+    },
     supprimer: function(e) {
       let chienToDelete =
         e.target.parentNode.parentNode.childNodes[2].innerHTML;
       let refuge = this.refuges[0].refuge;
+
       for (let i = 0; i < this.recap.length; i++) {
         if (this.recap[i].name == chienToDelete) {
           this.chienId = this.recap[i]._id;
+          this.chienImage = this.recap[i].imageUrl;
         }
       }
-      configAxios
-        .delete(`chien/${this.chienId}`)
-        .then(() =>
-          configAxios
-            .get(`chien`)
-            .then((res) =>
-              store
-                .dispatch("getChiens", res.data)
-                .then(() =>
-                  configAxios
-                    .get(`refuges/${refuge}`)
-                    .then((res) => store.dispatch("getRecapChiens", res.data))
-                )
-            )
-        );
+      configAxios.delete(`chien/${this.chienId}`).then(() =>
+        configAxios.get(`chien`).then((res) =>
+          store.dispatch("getChiens", res.data).then(() =>
+            configAxios.get(`refuges/${refuge}`).then((res) => {
+              store.dispatch("getRecapChiens", res.data);
+            })
+          )
+        )
+      );
+
       e.target.parentNode.parentNode.remove();
+      if (this.recap.length <= 1) {
+        const index = this.refuges.indexOf(this.selectedRefuge);
+        if (index > -1) {
+          this.refuges.splice(index, 1);
+        }
+        store.dispatch("getRefuges", this.refuges);
+        this.$router.push("/accueil");
+      }
+    },
+    modifier: function(e) {
+      let chienToUpdate =
+        e.target.parentNode.parentNode.childNodes[2].innerHTML;
+      //let refuge = this.refuges[0].refuge;
+      for (let i = 0; i < this.recap.length; i++) {
+        if (this.recap[i].name == chienToUpdate) {
+          this.chienId = this.recap[i]._id;
+        }
+      }
+      console.log(this.chienId);
+    },
+    voirFiche: function(e) {
+      let chienToUpdate =
+        e.target.parentNode.parentNode.childNodes[2].innerHTML;
+      let page = window.location.pathname;
+      store.dispatch("getPage", page);
+      //let refuge = this.refuges[0].refuge;
+      for (let i = 0; i < this.recap.length; i++) {
+        if (this.recap[i].name == chienToUpdate) {
+          this.chienId = this.recap[i]._id;
+        }
+      }
+      configAxios.get(`chien/${this.chienId}`).then((res) => {
+        store.dispatch("getOneChiens", res.data);
+        this.$router.push("fiche");
+      });
     },
   },
 };
@@ -111,6 +152,7 @@ export default {
 <style lang="scss">
 table {
   width: 95%;
+  margin: auto;
   & thead {
     font-weight: bold;
     background: linear-gradient(rgb(243, 233, 241), #9667da);

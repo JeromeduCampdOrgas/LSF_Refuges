@@ -44,12 +44,12 @@
           >Accueil</router-link
         ><!---->
 
-        <router-link
+        <!--<router-link
           to="/recapitulatif"
           @click="recapitulatif"
           v-if="this.userLoggedIn.isAdmin"
           >Récapitulatif</router-link
-        ><!---->
+        >--><!---->
         <span v-if="this.userLoggedIn.isAdmin" @click="toggleModale"
           >Nouveau chien</span
         >
@@ -166,6 +166,7 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin: auto;
+  width: 100vh;
 }
 /********MENU/NAVIGATION ***********/
 li {
@@ -174,6 +175,8 @@ li {
 }
 #nav {
   padding: 5px;
+  width: 95%;
+  margin: auto;
   background: linear-gradient(rgb(243, 233, 241), #9667da);
   & a,
   span {

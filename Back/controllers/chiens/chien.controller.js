@@ -1,12 +1,5 @@
 const ChienModel = require("../../models/chien.model");
 const fs = require("fs"); //natif express ou node
-//const { promisify } = require("util"); //natif express ou node
-//const pipeline = promisify(require("stream").pipeline);
-
-//const ObjectID = require("mongoose").Types.ObjectId;
-//const { v4: uuidv4 } = require("uuid");
-////const { json } = require("body-parser");
-//const uuid = uuidv4();
 
 //Création chien
 module.exports.newChien = (req, res, next) => {
@@ -71,16 +64,17 @@ module.exports.updateOneChien = async (req, res) => {
     );
   }
 };
-//delete 1produit
-module.exports.deleteOneChien = async (req, res) => {
-  /*if (!ObjectID.isValid(req.params.id)) {
-    return res.status(400).send("ID unknown : " + req.params.id);
-  } else {*/
-  try {
-    await ChienModel.deleteOne({ _id: req.params.id }).exec();
-    res.status(200).json({ message: "Successfully deleted. " });
-  } catch (err) {
-    return res.status(500).json({ message: err });
-    //}
-  }
+//delete 1 chien
+
+exports.deleteOneChien = (req, res, next) => {
+  ChienModel.findOne({ _id: req.params.id })
+    .then((chien) => {
+      const filename = chien.imageUrl.split("/images/")[1];
+      fs.unlink(`images/${filename}`, () => {
+        ChienModel.deleteOne({ _id: req.params.id })
+          .then(() => res.status(200).json({ message: "Objet supprimé !" }))
+          .catch((error) => res.status(400).json({ error }));
+      });
+    })
+    .catch((error) => res.status(500).json({ error }));
 };

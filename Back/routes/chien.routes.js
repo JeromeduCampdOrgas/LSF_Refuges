@@ -1,6 +1,6 @@
 const router = require("express").Router();
 const chienController = require("../controllers/chiens/chien.controller");
-//const uploadController = require("../controllers/upload.controller");
+
 //const multer = require("multer");
 const multer = require("../middleware/multer-config");
 //const upload = multer();

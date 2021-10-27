@@ -15,6 +15,9 @@ const chienSchema = new mongoose.Schema(
     imageUrl: {
       type: String,
     },
+    puce: {
+      type: String,
+    },
     robe: { type: String },
 
     sexe: {

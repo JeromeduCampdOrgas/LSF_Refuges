@@ -53,6 +53,16 @@
             @blur="capitalize"
           />
         </div>
+        <!--         N°de puce       -->
+        <div>
+          <label for="puce">N°de puce</label>
+          <input
+            type="text"
+            id="puce"
+            name="puce"
+            v-model="this.dataChien.puce"
+          />
+        </div>
         <!--         Image           -->
         <div>
           <label for="image">Photo principale</label>
@@ -110,6 +120,7 @@
             v-model="this.dataChien.description"
           ></textarea>
         </div>
+
         <!--------------------------------------------------------------->
         <div>
           <input
@@ -134,8 +145,24 @@
           />
           <label for="optioned">Optionné</label>
         </div>
+        <!------CAROUSEL--------------------------------------------------->
+        <div id="carousel">
+          <div class="imgPlus">
+            <input id="imgPlus" type="button" value="+" @click="imagesupp" />
+          </div>
+          <div id="photos">
+            <h3>Carousel</h3>
+            <div class="photo">
+              <input
+                class="carousel"
+                type="file"
+                name="carousel"
+                @change="onFileChange"
+              />
+            </div>
+          </div>
+        </div>
         <!----------------------------------------------------------------------->
-
         <div id="buttons">
           <button class="btn-success" @click="createChien">Valider</button>
           <button class="btn-danger" @click="toggleModale, erreur">
@@ -160,6 +187,8 @@ export default {
       dataChien: {
         refuge: "",
         name: "",
+        puce: "",
+        emplacement: "",
         imageUrl: "",
         robe: "",
         sexe: "",
@@ -168,6 +197,7 @@ export default {
         chat: "",
         sante: "",
         statut: "",
+        carousel: [],
       },
       refuges: store.state.refuges,
       ajout: false,
@@ -176,15 +206,14 @@ export default {
   },
   components: {},
   methods: {
-    test() {
-      let statut = document.getElementsByClassName("statut");
-      for (let i = 0; i < statut.length; i++) {
-        if (statut[i].checked) {
-          this.dataChien.statut = statut[i].value;
-          console.log("statut: " + this.dataChien.statut);
-        }
-      }
-      console.log(statut);
+    imagesupp() {
+      let photos = document.getElementById("photos");
+      let imgInput = document.createElement("input");
+      imgInput.setAttribute("class", "photo");
+      imgInput.setAttribute("type", "file");
+      imgInput.setAttribute("name", "photo");
+      //imgInput.setAttribute("style", {margin-bottom:10px});
+      photos.appendChild(imgInput);
     },
     capitalize(e) {
       let string = e.target.value;
@@ -237,6 +266,8 @@ export default {
       newChien.set("sante", this.dataChien.sante);
       newChien.set("imageUrl", this.dataChien.imageUrl);
       newChien.set("statut", this.dataChien.statut);
+      newChien.set("emplacement", this.dataChien.emplacement);
+      newChien.set("puce", this.dataChien.puce);
 
       //requête Axios
       configAxios.post("/chien", newChien).then(() =>
@@ -355,6 +386,25 @@ export default {
     & .alert {
       color: red;
       font-weight: bold;
+    }
+    & #carousel {
+      display: flex;
+      align-items: center;
+      background: #fff;
+      border-radius: 15px;
+      padding: 10px;
+      .imgPlus {
+        width: 100px;
+        & #imgPlus {
+          width: 30px;
+        }
+      }
+      & #photos {
+        flex-direction: column;
+        & .photo {
+          margin-bottom: 10px;
+        }
+      }
     }
   }
 }
