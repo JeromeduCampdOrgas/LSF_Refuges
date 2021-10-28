@@ -191,10 +191,12 @@ h1 {
   margin: 20px;
 }
 #compta {
-  border: 1px black solid;
-  width: 45%;
+  width: 35%;
   margin: auto;
+  padding: 5px;
   background: #eee;
+  box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
+  border-radius: 5px;
   & p {
     font-weight: bold;
   }
