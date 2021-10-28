@@ -1,8 +1,12 @@
 <template>
   <div>
     <h1>Récapitulatif {{ this.selectedRefuge }}</h1>
-    <div>
-      <!--<p>{{ item.data[0].refuge }}</p>-->
+    <div id="compta">
+      <p>Nombre de chiens: {{ this.recap.length }}</p>
+      <p>Réservés: {{ reserves.length }}</p>
+      <p>Optionnés: {{ optionnes.length }}</p>
+    </div>
+    <div id="tableau">
       <table>
         <thead>
           <tr class="libelle">
@@ -172,22 +176,42 @@ export default {
       });
     },
   },
+  computed: {
+    reserves() {
+      return this.recap.filter((item) => item.statut == "Réservé");
+    },
+    optionnes() {
+      return this.recap.filter((item) => item.statut == "Optionné");
+    },
+  },
 };
 </script>
 <style lang="scss">
 h1 {
   margin: 20px;
 }
-table {
-  min-width: 98%;
+#compta {
+  border: 1px black solid;
+  width: 45%;
   margin: auto;
-  & thead {
+  background: #eee;
+  & p {
     font-weight: bold;
-    background: linear-gradient(rgb(243, 233, 241), #9667da);
   }
-  & .icons {
-    cursor: pointer;
-    margin: 5px;
+}
+#tableau {
+  margin-top: 20px;
+  table {
+    min-width: 98%;
+    margin: auto;
+    & thead {
+      font-weight: bold;
+      background: linear-gradient(rgb(243, 233, 241), #9667da);
+    }
+    & .icons {
+      cursor: pointer;
+      margin: 5px;
+    }
   }
 }
 table,
