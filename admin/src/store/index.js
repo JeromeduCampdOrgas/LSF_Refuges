@@ -16,6 +16,7 @@ const state = {
   chiens: [],
   recapchiens: [],
   onechien: {},
+  chienToUpdate: {},
 };
 /*******  Getters    **********/
 const getters = {
@@ -51,6 +52,9 @@ const getters = {
   getOneChiens: () => {
     return state.onechien;
   },
+  getChienToUpdate: () => {
+    return state.chienToUpdate;
+  },
 };
 /*******  Mutations  ******** */
 const mutations = {
@@ -84,6 +88,9 @@ const mutations = {
   },
   SET_ONE_CHIEN: (state, chien) => {
     state.onechien = chien;
+  },
+  SET_CHIEN_TO_UPDATE: (state, chien) => {
+    state.chienToUpdate = chien;
   },
 };
 /*******   Actions  ************/
@@ -119,6 +126,9 @@ const actions = {
   },
   getOneChiens: ({ commit }, chien) => {
     commit("SET_ONE_CHIEN", chien);
+  },
+  getChienToUpdate: ({ commit }, chien) => {
+    commit("SET_CHIEN_TO_UPDATE", chien);
   },
 };
 export default new Vuex.Store({

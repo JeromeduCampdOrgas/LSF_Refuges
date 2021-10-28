@@ -1,7 +1,6 @@
 <template>
   <div>
     <h1>Récapitulatif {{ this.selectedRefuge }}</h1>
-    {{ this.updateDogRevele }}
     <div>
       <!--<p>{{ item.data[0].refuge }}</p>-->
       <table>
@@ -90,17 +89,30 @@ export default {
   },
   components: { updateModal },
   methods: {
-    updateModale: function() {
-      this.updateDogRevele = !this.updateDogRevele;
-    },
-    updateClose: function() {
-      this.updateDogRevele = false;
-    },
     test() {
       const queryString = window.location.pathname;
       console.log(queryString);
       console.log(window.location.pathname);
     },
+    updateModale: function(e) {
+      let chienToUpdate =
+        e.target.parentNode.parentNode.childNodes[2].innerHTML;
+
+      for (let i = 0; i < this.recap.length; i++) {
+        if (this.recap[i].name == chienToUpdate) {
+          this.chienId = this.recap[i]._id;
+        }
+      }
+      configAxios.get(`chien/${this.chienId}`).then((res) => {
+        store.dispatch("getChienToUpdate", res.data);
+      });
+
+      this.updateDogRevele = !this.updateDogRevele;
+    },
+    updateClose: function() {
+      this.updateDogRevele = false;
+    },
+
     supprimer: function(e) {
       let chienToDelete =
         e.target.parentNode.parentNode.childNodes[2].innerHTML;

@@ -4,44 +4,11 @@
     <div class="modale ">
       <div class="btn-modale btn btn-danger" @click="updateClose">X</div>
       <h1>Modifier</h1>
-
+      {{ this.$store.state.chienToUpdate }}
+      <div id="imgChien">
+        <img :src="this.$store.state.chienToUpdate.imageUrl" alt="" />
+      </div>
       <form action="" enctype="multipart/form-data" id="formulaire">
-        <!--         Refuge           -->
-        <div class="refuge">
-          <label for="refuge">Refuge</label>
-          <select id="refuge" v-model="this.dataChien.refuge" v-if="!ajout">
-            <option
-              v-for="refuge in this.refuges"
-              :key="refuge"
-              :value="refuge"
-              >{{ refuge }}</option
-            >
-          </select>
-
-          <input
-            v-if="ajout"
-            type="text"
-            name="refuge"
-            v-model="this.dataChien.refuge"
-            @blur="capitalize"
-          />
-          <button
-            class="buttonOption ajoutSuppr"
-            id="new-refuge"
-            v-if="!ajout"
-            @click="clickAjout"
-          >
-            +
-          </button>
-          <button
-            class="buttonOption ajoutSuppr"
-            id="escape-newrefuge"
-            v-if="ajout"
-            @click="clickAjout"
-          >
-            -
-          </button>
-        </div>
         <!--        Nom du chien           -->
         <div>
           <label for="name">Nom du chien</label>
@@ -49,7 +16,7 @@
             type="text"
             id="nom"
             name="name"
-            v-model="this.dataChien.name"
+            :value="this.$store.state.chienToUpdate.name"
             @blur="capitalize"
           />
         </div>
@@ -60,23 +27,28 @@
             type="text"
             id="puce"
             name="puce"
-            v-model="this.dataChien.puce"
+            :value="this.$store.state.chienToUpdate.puce"
           />
         </div>
-        <!--         Image           -->
+        <!--         Image           
         <div>
           <label for="image">Photo principale</label>
           <input type="file" name="image" id="image" @change="onFileChange" />
         </div>
-        <!--         Robe           -->
+        -->
+        <!--   Robe           -->
         <div>
           <label for="robe">Robe</label>
-          <input type="text" id="robe" v-model="this.dataChien.robe" />
+          <input
+            type="text"
+            id="robe"
+            :value="this.$store.state.chienToUpdate.robe"
+          />
         </div>
         <!--         Sexe           -->
         <div>
           <label for="sexe">Sexe</label>
-          <select id="sexe" v-model="this.dataChien.sexe">
+          <select id="sexe" :value="this.$store.state.chienToUpdate.sexe">
             <option>Mâle</option>
             <option>Femelle</option>
           </select>
@@ -84,7 +56,7 @@
         <!--         Chat           -->
         <div>
           <label for="chat">Test chat</label>
-          <select id="chat" v-model="this.dataChien.chat">
+          <select id="chat" :value="this.$store.state.chienToUpdate.chat">
             <option>OK</option>
             <option>KO</option>
             <option>A faire</option>
@@ -93,12 +65,20 @@
         <!--         Santé           -->
         <div>
           <label for="sante">Santé</label>
-          <input type="text" id="sante" v-model="this.dataChien.sante" />
+          <input
+            type="text"
+            id="sante"
+            :value="this.$store.state.chienToUpdate.sante"
+          />
         </div>
         <!--         Age           -->
         <div>
           <label for="age">Age</label>
-          <input type="text" id="age" v-model="this.dataChien.age" />
+          <input
+            type="text"
+            id="age"
+            :value="this.$store.state.chienToUpdate.age"
+          />
         </div>
         <!--         Emplacement           -->
         <div>
@@ -106,7 +86,7 @@
           <input
             type="text"
             id="emplacement"
-            v-model="this.dataChien.emplacement"
+            :value="this.$store.state.chienToUpdate.emplacement"
           />
         </div>
         <!--         Description           -->
@@ -117,33 +97,60 @@
             id="description"
             cols="30"
             rows="5"
-            v-model="this.dataChien.description"
+            :value="this.$store.state.chienToUpdate.description"
           ></textarea>
         </div>
 
         <!--------------------------------------------------------------->
-        <div>
-          <input
-            class="statut"
-            type="radio"
-            id="reserved"
-            name="chien"
-            value="Réservé"
-            checked
-            @click="test"
-          />
-          <label for="reserved">Réservé</label>
+        <div v-if="this.$store.state.chienToUpdate.statut == 'Réservé'">
+          <div>
+            <input
+              class="statut"
+              type="radio"
+              id="reserved"
+              name="chien"
+              value="Réservé"
+              checked
+              @click="checkStatut"
+            />
+            <label for="reserved">Réservé</label>
+          </div>
+          <div>
+            <input
+              class="statut"
+              type="radio"
+              id="optioned"
+              name="chien"
+              value="Optionné"
+              @click="checkStatut"
+            />
+            <label for="optioned">Optionné</label>
+          </div>
         </div>
-        <div>
-          <input
-            class="statut"
-            type="radio"
-            id="optioned"
-            name="chien"
-            value="Optionné"
-            @click="test"
-          />
-          <label for="optioned">Optionné</label>
+        <div v-if="this.$store.state.chienToUpdate.statut == 'Optionné'">
+          <div>
+            <input
+              class="statut"
+              type="radio"
+              id="reserved"
+              name="chien"
+              value="Réservé"
+              @click="checkStatut"
+            />
+            <label for="reserved">Réservé</label>
+          </div>
+          <div>
+            <input
+              class="statut"
+              type="radio"
+              id="optioned"
+              name="chien"
+              value="Optionné"
+              checked
+              @click="checkStatut"
+            />
+            <label for="optioned">Optionné</label>
+          </div>
         </div>
         <!------CAROUSEL--------------------------------------------------->
         <!--<div id="carousel">
@@ -164,7 +171,7 @@
         </div>-->
         <!----------------------------------------------------------------------->
         <div id="buttons">
-          <button class="btn-success" @click="createChien">Valider</button>
+          <button class="btn-success" @click="updateValidation">Valider</button>
           <button class="btn-danger" @click="updateClose, erreur">
             Fermer
           </button>
@@ -182,6 +189,7 @@ export default {
   props: ["updateDogRevele", "updateClose"],
   data() {
     return {
+      chienToUpdate: this.$store.state.chienToUpdate,
       dataChien: {
         refuge: "",
         name: "",
@@ -197,10 +205,45 @@ export default {
         statut: "",
         carousel: [],
       },
+      createdStatut: this.$store.state.chienToUpdate.statut,
       refuges: store.state.refuges,
       ajout: false,
       showAlert: false,
+      check: "",
     };
+  },
+  methods: {
+    checkStatut(e) {
+      this.check = e.target.value;
+    },
+    updateValidation: function() {
+      let id = this.$store.state.chienToUpdate._id;
+      let name = document.getElementById("nom").value;
+      let puce = document.getElementById("puce").value;
+      let robe = document.getElementById("robe").value;
+      let sexe = document.getElementById("sexe").value;
+      let chat = document.getElementById("chat").value;
+      let sante = document.getElementById("sante").value;
+      let age = document.getElementById("age").value;
+      let emplacement = document.getElementById("emplacement").value;
+      let description = document.getElementById("description").value;
+
+      if (this.check == "") {
+        this.check = this.$store.state.chienToUpdate.statut;
+      }
+      let statut = this.check;
+      console.log(id);
+      console.log(name);
+      console.log(puce);
+      console.log(robe);
+      console.log(sexe);
+      console.log(chat);
+      console.log(sante);
+      console.log(age);
+      console.log(emplacement);
+      console.log(description);
+      console.log(statut);
+    },
   },
 };
 </script>
@@ -241,12 +284,21 @@ export default {
       top: 10px;
       right: 10px;
     }
+    & #imgChien {
+      width: 100%;
+
+      & img {
+        height: 200px;
+        object-fit: cover;
+      }
+    }
   }
   form {
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
+
     & div {
       text-align: left;
       width: 100%;
