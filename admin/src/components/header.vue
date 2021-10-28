@@ -16,7 +16,7 @@ export default {
 <style lang="scss">
 header {
   margin: auto;
-  max-width: 100%;
+  width: 100vh;
   & #banniere {
     width: 70%;
     margin: auto;

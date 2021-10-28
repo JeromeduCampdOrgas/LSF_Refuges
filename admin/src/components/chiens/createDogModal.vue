@@ -115,7 +115,7 @@
           <textarea
             name="description"
             id="description"
-            cols="30"
+            cols="40"
             rows="5"
             v-model="this.dataChien.description"
           ></textarea>

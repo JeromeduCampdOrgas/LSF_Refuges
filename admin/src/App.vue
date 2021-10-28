@@ -171,7 +171,7 @@ li {
 }
 #nav {
   padding: 5px;
-  width: 95%;
+  width: 98%;
   margin: auto;
   background: linear-gradient(rgb(243, 233, 241), #9667da);
   & a,
@@ -201,6 +201,9 @@ li {
 
 /************************ */
 @media screen and(min-width: 768px) {
+  #app {
+    width: 100%;
+  }
   #burger {
     display: none;
     & #mobileMenu {

@@ -6,32 +6,32 @@
       <table>
         <thead>
           <tr class="libelle">
-            <td>Statut</td>
-            <td>Image</td>
-            <td>Name</td>
-            <td>Robe</td>
-            <td>Sexe</td>
-            <td>Test chat</td>
-            <td>Santé</td>
-            <td>Age</td>
-            <td>Box</td>
-            <td>commentaires</td>
-            <td>Actions</td>
+            <th class="statut">Statut</th>
+            <th class="image">Image</th>
+            <th class="name">Name</th>
+            <th class="robe">Robe</th>
+            <th class="sexe">Sexe</th>
+            <th class="chat">Test chat</th>
+            <th class="sante">Santé</th>
+            <th class="age">Age</th>
+            <th class="box">Box</th>
+            <th class="comment">commentaires</th>
+            <th class="actions">Actions</th>
           </tr>
         </thead>
         <tbody>
           <tr v-for="elem in this.recap" :key="elem">
-            <td>{{ elem.statut }}</td>
+            <td class="statut">{{ elem.statut }}</td>
             <td class="image"><img :src="elem.imageUrl" alt="" /></td>
-            <td>{{ elem.name }}</td>
-            <td>{{ elem.robe }}</td>
-            <td>{{ elem.sexe }}</td>
-            <td>{{ elem.chat }}</td>
-            <td>{{ elem.sante }}</td>
-            <td>{{ elem.age }}</td>
-            <td>{{ elem.emplacement }}</td>
-            <td>{{ elem.description }}</td>
-            <td>
+            <td class="name">{{ elem.name }}</td>
+            <td class="robe">{{ elem.robe }}</td>
+            <td class="sexe">{{ elem.sexe }}</td>
+            <td class="chat">{{ elem.chat }}</td>
+            <td class="sante">{{ elem.sante }}</td>
+            <td class="age">{{ elem.age }}</td>
+            <td class="box">{{ elem.emplacement }}</td>
+            <td class="comment">{{ elem.description }}</td>
+            <td class="statut">
               <img
                 class="icons"
                 src="../../../public/img/eye.svg"
@@ -61,7 +61,6 @@
         </tbody>
       </table>
     </div>
-    <button @click="test">test</button>
 
     <updateModal
       v-bind:updateDogRevele="updateDogRevele"
@@ -147,7 +146,8 @@ export default {
     modifier: function(e) {
       let chienToUpdate =
         e.target.parentNode.parentNode.childNodes[2].innerHTML;
-      //let refuge = this.refuges[0].refuge;
+      let page = window.location.pathname;
+      store.dispatch("getPage", page);
       for (let i = 0; i < this.recap.length; i++) {
         if (this.recap[i].name == chienToUpdate) {
           this.chienId = this.recap[i]._id;
@@ -175,8 +175,11 @@ export default {
 };
 </script>
 <style lang="scss">
+h1 {
+  margin: 20px;
+}
 table {
-  width: 95%;
+  min-width: 98%;
   margin: auto;
   & thead {
     font-weight: bold;
@@ -184,12 +187,15 @@ table {
   }
   & .icons {
     cursor: pointer;
+    margin: 5px;
   }
 }
 table,
+th,
 td {
   border: 1px black solid;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 .image {
   width: 100px;
@@ -198,5 +204,9 @@ td {
     height: 100%;
     object-fit: cover;
   }
+}
+.comment {
+  max-width: 200px;
+  overflow-wrap: break-word;
 }
 </style>

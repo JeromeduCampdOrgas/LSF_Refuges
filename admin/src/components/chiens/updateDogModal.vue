@@ -4,7 +4,6 @@
     <div class="modale ">
       <div class="btn-modale btn btn-danger" @click="updateClose">X</div>
       <h1>Modifier</h1>
-      {{ this.$store.state.chienToUpdate }}
       <div id="imgChien">
         <img :src="this.$store.state.chienToUpdate.imageUrl" alt="" />
       </div>
@@ -95,7 +94,7 @@
           <textarea
             name="description"
             id="description"
-            cols="30"
+            cols="40"
             rows="5"
             :value="this.$store.state.chienToUpdate.description"
           ></textarea>
@@ -190,21 +189,6 @@ export default {
   data() {
     return {
       chienToUpdate: this.$store.state.chienToUpdate,
-      dataChien: {
-        refuge: "",
-        name: "",
-        puce: "",
-        emplacement: "",
-        imageUrl: "",
-        robe: "",
-        sexe: "",
-        description: "",
-        age: "",
-        chat: "",
-        sante: "",
-        statut: "",
-        carousel: [],
-      },
       createdStatut: this.$store.state.chienToUpdate.statut,
       refuges: store.state.refuges,
       ajout: false,
@@ -251,7 +235,7 @@ export default {
           console.log("modifications Ok");
           configAxios.get(`refuges/${refuge}`).then((res) => {
             store.dispatch("getRecapChiens", res.data);
-            this.$router.push(refuge);
+            //location.replace(this.$store.state.page);
           });
         });
     },
@@ -287,7 +271,7 @@ export default {
     position: fixed;
     width: 100%;
     border-radius: 10px;
-    max-height: calc(100vh - 100px);
+    max-height: calc(100vh - 30px);
     overflow-y: auto;
 
     & .btn-modale {
