@@ -235,8 +235,6 @@ export default {
           this.dataChien.name = String;
           break;
       }
-      console.log(this.dataChien.refuge);
-      console.log(this.dataChien.name);
     },
     onFileChange(e) {
       this.dataChien.imageUrl = e.target.files[0];

@@ -200,6 +200,11 @@ export default {
     checkStatut(e) {
       this.check = e.target.value;
     },
+    capitalize(e) {
+      let string = e.target.value;
+      let String = string.toUpperCase();
+      e.target.value = String;
+    },
     updateValidation: function() {
       let id = this.$store.state.chienToUpdate._id;
       let name = document.getElementById("nom").value;
@@ -231,13 +236,21 @@ export default {
           description: description,
           statut: statut,
         })
-        .then(() => {
-          console.log("modifications Ok");
-          configAxios.get(`refuges/${refuge}`).then((res) => {
-            store.dispatch("getRecapChiens", res.data);
-            //location.replace(this.$store.state.page);
-          });
-        });
+        .then(() =>
+          //on récupére tous les produits en base
+          configAxios
+            .get("chien")
+            .then((res) => {
+              store.dispatch("getChiens", res.data);
+            })
+            .then(() => {
+              configAxios.get(`refuges/${refuge}`).then((res) => {
+                store.dispatch("getRecapChiens", res.data);
+              });
+            })
+        );
+
+      location.replace(refuge);
     },
   },
 };
