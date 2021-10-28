@@ -3,7 +3,6 @@
     <Header />
 
     <div id="nav">
-      {{ this.updateDogRevele }}
       <div id="burger" @click="menuvisibility">
         <img
           class="icons"
@@ -16,19 +15,13 @@
         <router-link to="/" @click="deconnect" v-if="this.setUserLogged"
           >Déconnexion</router-link
         >
-        <router-link to="/AllProducts">Accueil</router-link>
+        <router-link to="/Accueil" v-if="this.setUserLogged"
+          >Accueil</router-link
+        >
 
-        <router-link
-          to="/recapitulatif"
-          @click="recapitulatif"
-          v-if="this.userLoggedIn.isAdmin"
-          >Récapitulatif</router-link
-        ><!---->
-        <router-link
-          to="/"
-          v-if="this.userLoggedIn.isAdmin"
-          @click="toggleModale"
-          >Nouveau chien</router-link
+        <!---->
+        <span v-if="this.userLoggedIn.isAdmin" @click="toggleModale"
+          >Nouveau chien</span
         >
         <router-link
           to="/utilisateurs"
@@ -161,7 +154,7 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin: auto;
+  //margin: auto;
   width: 100vh;
 }
 /********MENU/NAVIGATION ***********/

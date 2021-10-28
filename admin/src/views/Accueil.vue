@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="b-container">
     <Accueil />
   </div>
 </template>
@@ -18,4 +18,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+div {
+  margin-top: 30px;
+}
+</style>

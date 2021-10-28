@@ -1,20 +1,44 @@
 <template>
   <div class="fiche">
-    <input type="button" value="Retour" @click="retour" />
-    <h1>{{ this.fiche.name }}</h1>
+    <div id="title">
+      <div id="retour">
+        <img
+          src="https://img.icons8.com/color/48/000000/arrow-pointing-left--v3.png"
+          @click="retour"
+        />
+      </div>
+      <h1>
+        <!--<input type="button" value="" @click="retour" />-->
+        {{ this.fiche.name }}
+      </h1>
+    </div>
     <p>N° de puce: {{ this.fiche.puce }}</p>
     <div id="image">
       <img :src="this.fiche.imageUrl" alt="this.fiche.name" />
     </div>
     <div class="infos">
       <h2>{{ this.fiche.statut }}</h2>
-      <p>Box: {{ this.fiche.emplacement }}</p>
-      <p>Sexe: {{ this.fiche.sexe }}</p>
-      <p>Age: {{ this.fiche.age }}</p>
-      <p>Couleur de robe: {{ this.fiche.robe }}</p>
-      <p>Test chat: {{ this.fiche.chat }}</p>
-      <p>Etat de santé: {{ this.fiche.sante }}</p>
-      <p>Commentaires: {{ this.fiche.description }}</p>
+      <p>
+        Box: <span>{{ this.fiche.emplacement }}</span>
+      </p>
+      <p>
+        Sexe: <span>{{ this.fiche.sexe }}</span>
+      </p>
+      <p>
+        Age: <span>{{ this.fiche.age }}</span>
+      </p>
+      <p>
+        Couleur de robe: <span>{{ this.fiche.robe }}</span>
+      </p>
+      <p>
+        Test chat: <span>{{ this.fiche.chat }}</span>
+      </p>
+      <p>
+        Etat de santé: <span>{{ this.fiche.sante }}</span>
+      </p>
+      <p id="comment">
+        Commentaires: <span>{{ this.fiche.description }}</span>
+      </p>
     </div>
   </div>
 </template>
@@ -38,23 +62,55 @@ export default {
 
 <style lang="scss" scoped>
 .fiche {
-  width: 80%;
+  width: 40%;
   font-weight: bold;
-  margin: auto;
+  margin: 20px auto;
+  & #title {
+    display: flex;
+
+    & img {
+      height: 30px;
+      left: 0;
+    }
+    & img:hover {
+      transform: translateX(-3px);
+    }
+    & h1 {
+      margin: auto;
+    }
+  }
   & #image {
     height: 300px;
-    margin: auto;
+    margin-bottom: 15px;
     object-fit: cover;
+    border-radius: 5px;
     & img {
+      border-radius: 5px;
       height: 100%;
     }
   }
   & .infos {
     display: flex;
     flex-direction: column;
-
+    margin: auto;
+    width: 68%;
+    border-radius: 5px;
+    background: #eee;
+    box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
     & p {
       margin: auto;
+      & span {
+        font-weight: normal;
+      }
+    }
+    & #comment {
+      margin-top: 10px;
+      padding: 10px;
+      width: 95%;
+      background: #fff;
+      border-radius: 15px;
+
+      overflow-wrap: break-word;
     }
   }
 }
