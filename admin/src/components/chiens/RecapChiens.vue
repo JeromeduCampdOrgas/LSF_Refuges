@@ -2,9 +2,31 @@
   <div>
     <h1>Récapitulatif {{ this.selectedRefuge }}</h1>
     <div id="compta">
-      <p>Nombre de chiens: {{ this.recap.length }}</p>
-      <p>Réservés: {{ reserves.length }}</p>
-      <p>Optionnés: {{ optionnes.length }}</p>
+      <div id="nombres">
+        <p>Nombre de chiens: {{ this.recap.length }}</p>
+        <p>Réservés: {{ reserves.length }}</p>
+        <p>Optionnés: {{ optionnes.length }}</p>
+      </div>
+      <div id="detail">
+        <p>
+          <button
+            type="button"
+            class="btn btn-primary btn-sm"
+            @click="lesReserves"
+          >
+            Les réservés
+          </button>
+        </p>
+        <p>
+          <button
+            type="button"
+            class="btn btn-secondary btn-sm"
+            @click="lesOptionnes"
+          >
+            Les optionnés
+          </button>
+        </p>
+      </div>
     </div>
     <div id="tableau">
       <table>
@@ -88,14 +110,33 @@ export default {
       chienImage: "",
       page: "",
       updateDogRevele: false,
+      lesreserves: [],
+      lesoptionnes: [],
     };
   },
   components: { updateModal },
   methods: {
-    test() {
-      const queryString = window.location.pathname;
-      console.log(queryString);
-      console.log(window.location.pathname);
+    lesReserves() {
+      let page = window.location.pathname;
+      store.dispatch("getPage", page);
+      for (let i = 0; i < this.$store.state.recapchiens.length; i++) {
+        if (this.$store.state.recapchiens[i].statut == "Réservé") {
+          this.lesreserves.push(this.$store.state.recapchiens[i]);
+        }
+      }
+      store.dispatch("getReserves", this.lesreserves);
+      this.$router.push("reserves");
+    },
+    lesOptionnes() {
+      let page = window.location.pathname;
+      store.dispatch("getPage", page);
+      for (let i = 0; i < this.$store.state.recapchiens.length; i++) {
+        if (this.$store.state.recapchiens[i].statut == "Optionné") {
+          this.lesoptionnes.push(this.$store.state.recapchiens[i]);
+        }
+      }
+      store.dispatch("getOptionnes", this.lesoptionnes);
+      this.$router.push("optionnes");
     },
     updateModale: function(e) {
       let chienToUpdate =
@@ -191,14 +232,29 @@ h1 {
   margin: 20px;
 }
 #compta {
+  display: flex;
+  justify-content: space-between;
   width: 35%;
   margin: auto;
   padding: 5px;
   background: #eee;
   box-shadow: rgba(0, 0, 0, 0.25) 0px 5px 15px;
   border-radius: 5px;
+
   & p {
     font-weight: bold;
+  }
+  & #nombres,
+  #detail {
+    padding: 5px;
+  }
+  & #nombres {
+    flex-grow: 2;
+  }
+  & #detail {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
   }
 }
 #tableau {

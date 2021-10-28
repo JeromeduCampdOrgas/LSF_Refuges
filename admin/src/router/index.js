@@ -40,6 +40,22 @@ const routes = [
       localStorage.getItem("token") ? next() : next({ name: "Login" });
     },
   },
+  {
+    path: "/reserves",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Reserves.vue"),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
+  {
+    path: "/optionnes",
+    component: () =>
+      import(/* webpackChunkName: "login" */ "../views/Optionnes.vue"),
+    beforeEnter: (to, from, next) => {
+      localStorage.getItem("token") ? next() : next({ name: "Login" });
+    },
+  },
 ];
 
 const router = createRouter({

@@ -17,6 +17,8 @@ const state = {
   recapchiens: [],
   onechien: {},
   chienToUpdate: {},
+  reserves: [],
+  optionnes: [],
 };
 /*******  Getters    **********/
 const getters = {
@@ -55,6 +57,12 @@ const getters = {
   getChienToUpdate: () => {
     return state.chienToUpdate;
   },
+  getReserves: () => {
+    return state.reserves;
+  },
+  getOptionnes: () => {
+    return state.optionnes;
+  },
 };
 /*******  Mutations  ******** */
 const mutations = {
@@ -91,6 +99,12 @@ const mutations = {
   },
   SET_CHIEN_TO_UPDATE: (state, chien) => {
     state.chienToUpdate = chien;
+  },
+  SET_RESERVES: (state, chiens) => {
+    state.reserves = chiens;
+  },
+  SET_OPTIONNES: (state, chiens) => {
+    state.optionnes = chiens;
   },
 };
 /*******   Actions  ************/
@@ -129,6 +143,12 @@ const actions = {
   },
   getChienToUpdate: ({ commit }, chien) => {
     commit("SET_CHIEN_TO_UPDATE", chien);
+  },
+  getReserves: ({ commit }, chiens) => {
+    commit("SET_RESERVES", chiens);
+  },
+  getOptionnes: ({ commit }, chiens) => {
+    commit("SET_OPTIONNES", chiens);
   },
 };
 export default new Vuex.Store({
