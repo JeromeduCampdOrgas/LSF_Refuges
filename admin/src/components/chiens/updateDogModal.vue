@@ -183,7 +183,7 @@
 
 <script>
 import store from "../../store/index";
-//import configAxios from "../../axios/configAxios";
+import configAxios from "../../axios/configAxios";
 export default {
   name: "updateModale",
   props: ["updateDogRevele", "updateClose"],
@@ -232,17 +232,28 @@ export default {
         this.check = this.$store.state.chienToUpdate.statut;
       }
       let statut = this.check;
-      console.log(id);
-      console.log(name);
-      console.log(puce);
-      console.log(robe);
-      console.log(sexe);
-      console.log(chat);
-      console.log(sante);
-      console.log(age);
-      console.log(emplacement);
-      console.log(description);
-      console.log(statut);
+      let refuge = this.$store.state.chienToUpdate.refuge;
+
+      configAxios
+        .put(`/chien/${id}`, {
+          name: name,
+          puce: puce,
+          robe: robe,
+          sexe: sexe,
+          chat: chat,
+          sante: sante,
+          age: age,
+          emplacement: emplacement,
+          description: description,
+          statut: statut,
+        })
+        .then(() => {
+          console.log("modifications Ok");
+          configAxios.get(`refuges/${refuge}`).then((res) => {
+            store.dispatch("getRecapChiens", res.data);
+            this.$router.push(refuge);
+          });
+        });
     },
   },
 };
