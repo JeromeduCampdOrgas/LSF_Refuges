@@ -20,14 +20,11 @@
         >
 
         <!---->
-        <span v-if="this.userLoggedIn.isAdmin" @click="toggleModale"
+        <span v-if="this.setUserLogged" @click="toggleModale"
           >Nouveau chien</span
         >
-        <router-link
-          to="/utilisateurs"
-          @click="getusers"
-          v-if="this.userLoggedIn.isAdmin"
-          >Admin utilisateurs</router-link
+        <span @click="userModale" v-if="this.userLoggedIn.isAdmin"
+          >Admin utilisateurs</span
         ><!---->
       </div>
 
@@ -39,16 +36,12 @@
           >Accueil</router-link
         ><!---->
 
-        <span v-if="this.userLoggedIn.isAdmin" @click="toggleModale"
+        <span v-if="this.setUserLogged" @click="toggleModale"
           >Nouveau chien</span
         >
-
         <!---->
-        <router-link
-          to="/utilisateurs"
-          @click="getusers"
-          v-if="this.userLoggedIn.isAdmin"
-          >Admin utilisateurs</router-link
+        <span @click="userModale" v-if="this.userLoggedIn.isAdmin"
+          >Admin utilisateurs</span
         ><!---->
       </div>
       <dogModale
@@ -56,6 +49,8 @@
         v-bind:toggleModale="toggleModale"
         v-bind:toggleClose="toggleClose"
       ></dogModale>
+      <userModale v-bind:userRevele="userRevele" v-bind:userModale="userModale">
+      </userModale>
     </div>
     <router-view />
   </div>
@@ -65,6 +60,7 @@
 import Header from "./components/header.vue";
 import store from "./store/index";
 import dogModale from "./components/chiens/createDogModal.vue";
+import userModale from "./components/user/UserModalForm.vue";
 
 import configAxios from "../src/axios/configAxios";
 
@@ -81,11 +77,13 @@ export default {
       token: localStorage.getItem("token"),
       /*****props */
       createDogRevele: false,
+      userRevele: false,
     };
   },
   components: {
     Header,
     dogModale,
+    userModale,
 
     //Footer,
   },
@@ -103,7 +101,9 @@ export default {
     toggleClose: function() {
       this.createDogRevele = false;
     },
-
+    userModale: function() {
+      this.userRevele = !this.userRevele;
+    },
     recapitulatif: async function() {
       for (let i = 0; i < this.$store.state.refuges.length; i++) {
         let refuge = new Array();
