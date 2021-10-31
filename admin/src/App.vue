@@ -25,6 +25,9 @@
         >
         <span @click="userModale" v-if="this.userLoggedIn.isAdmin"
           >Admin utilisateurs</span
+        >
+
+        <span @click="userModale" v-if="this.setUserLogged">Mon profil</span
         ><!---->
       </div>
 
@@ -42,7 +45,9 @@
         <!---->
         <span @click="userModale" v-if="this.userLoggedIn.isAdmin"
           >Admin utilisateurs</span
-        ><!---->
+        >
+        <span @click="profilModale" v-if="this.setUserLogged">Mon profil</span>
+        <!---->
       </div>
       <dogModale
         v-bind:createDogRevele="createDogRevele"
@@ -51,6 +56,10 @@
       ></dogModale>
       <userModale v-bind:userRevele="userRevele" v-bind:userModale="userModale">
       </userModale>
+      <profilModale
+        v-bind:profilRevele="profilRevele"
+        v-bind:profilModale="profilModale"
+      ></profilModale>
     </div>
     <router-view />
   </div>
@@ -61,6 +70,7 @@ import Header from "./components/header.vue";
 import store from "./store/index";
 import dogModale from "./components/chiens/createDogModal.vue";
 import userModale from "./components/user/UserModalForm.vue";
+import profilModale from "./components/user/profilModale.vue";
 
 import configAxios from "../src/axios/configAxios";
 
@@ -78,12 +88,14 @@ export default {
       /*****props */
       createDogRevele: false,
       userRevele: false,
+      profilRevele: false,
     };
   },
   components: {
     Header,
     dogModale,
     userModale,
+    profilModale,
 
     //Footer,
   },
@@ -102,7 +114,17 @@ export default {
       this.createDogRevele = false;
     },
     userModale: function() {
-      this.userRevele = !this.userRevele;
+      configAxios
+        .get("user")
+        .then((res) =>
+          store
+            .dispatch("getAllUsers", res.data)
+            .then(() => (this.userRevele = !this.userRevele))
+        );
+    },
+    profilModale: function() {
+      this.profilRevele = !this.profilRevele;
+      console.log(this.profilRevele);
     },
     recapitulatif: async function() {
       for (let i = 0; i < this.$store.state.refuges.length; i++) {
@@ -174,6 +196,7 @@ li {
     color: #2c3e50;
     margin: auto 25px;
     padding: 5px;
+    cursor: pointer;
     &.router-link-exact-active {
       color: white;
     }

@@ -100,7 +100,7 @@ export default {
           .then((result) => {
             localStorage.setItem("token", result.data.token);
             const decoded = jwtDecode(result.data.token);
-
+            console.log(decoded);
             this.logged = true;
             store.dispatch("getUserLogged", this.logged);
             store.dispatch("getUserInfos", decoded);

@@ -17,11 +17,11 @@ module.exports.userInfo = (req, res) => {
 };
 
 module.exports.updateUser = async (req, res) => {
-  console.log(ObjectID);
   if (!ObjectID.isValid(req.params.id))
     return res.status(400).send("ID unknown : " + req.params.id);
 
   try {
+    console.log(req.body);
     await UserModel.findOneAndUpdate(
       { _id: req.params.id },
       {

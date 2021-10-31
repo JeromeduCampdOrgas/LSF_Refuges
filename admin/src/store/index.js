@@ -6,6 +6,7 @@ const state = {
   /*user*/
   userLoggedIn: {},
   userLogged: false,
+  allUsers: [],
   /*page*/
   page: "",
   /*refuges*/
@@ -28,6 +29,9 @@ const getters = {
   },
   getUserLoggedIn: () => {
     return state.userLoggedIn;
+  },
+  getAllUsers: () => {
+    return state.allUsers;
   },
   /*page*/
   getPage: () => {
@@ -73,6 +77,9 @@ const mutations = {
   SET_USER_INFOS: (state, user) => {
     state.userLoggedIn = user;
   },
+  SET_GET_ALL_USERS: (state, users) => {
+    state.allUsers = users;
+  },
   /*page*/
   SET_PAGE: (state, page) => {
     state.page = page;
@@ -116,6 +123,9 @@ const actions = {
   //id,idAdmin
   getUserInfos: ({ commit }, user) => {
     commit("SET_USER_INFOS", user);
+  },
+  getAllUsers: ({ commit }, users) => {
+    commit("SET_GET_ALL_USERS", users);
   },
   /*page */
   getPage: ({ commit }, page) => {
