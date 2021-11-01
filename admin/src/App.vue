@@ -69,7 +69,7 @@
 import Header from "./components/header.vue";
 import store from "./store/index";
 import dogModale from "./components/chiens/createDogModal.vue";
-import userModale from "./components/user/UserModalForm.vue";
+import userModale from "./components/user/UserModal.vue";
 import profilModale from "./components/user/profilModale.vue";
 
 import configAxios from "../src/axios/configAxios";

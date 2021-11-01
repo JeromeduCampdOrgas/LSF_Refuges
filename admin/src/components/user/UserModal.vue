@@ -3,7 +3,7 @@
     <div class="overlay" @click="userModale"></div>
     <div class="modale ">
       <div class="btn-modale btn btn-danger" @click="userModale">X</div>
-      <h1>Utilisateur</h1>
+      <h1>Utilisateurs</h1>
       <table>
         <thead>
           <tr class="libelle">
@@ -25,12 +25,15 @@
 </template>
 <script>
 import store from "../../store/index";
+
 export default {
   name: "userModale",
   props: ["userRevele", "userModale"],
+
   data() {
     return {
       users: store.state.allUsers,
+      formRevele: true,
     };
   },
 };

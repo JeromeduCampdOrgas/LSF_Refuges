@@ -198,7 +198,6 @@ export default {
           this.chienId = this.recap[i]._id;
         }
       }
-      console.log(this.chienId);
     },
     voirFiche: function(e) {
       let chienToUpdate =

@@ -188,8 +188,8 @@ export default {
   props: ["updateDogRevele", "updateClose"],
   data() {
     return {
-      chienToUpdate: this.$store.state.chienToUpdate,
-      createdStatut: this.$store.state.chienToUpdate.statut,
+      chienToUpdate: store.state.chienToUpdate,
+      createdStatut: store.state.chienToUpdate.statut,
       refuges: store.state.refuges,
       ajout: false,
       showAlert: false,
@@ -216,13 +216,11 @@ export default {
       let age = document.getElementById("age").value;
       let emplacement = document.getElementById("emplacement").value;
       let description = document.getElementById("description").value;
-
       if (this.check == "") {
         this.check = this.$store.state.chienToUpdate.statut;
       }
       let statut = this.check;
       let refuge = this.$store.state.chienToUpdate.refuge;
-
       configAxios
         .put(`/chien/${id}`, {
           name: name,
@@ -249,8 +247,7 @@ export default {
               });
             })
         );
-
-      location.replace(refuge);
+      this.$router.push(refuge);
     },
   },
 };
