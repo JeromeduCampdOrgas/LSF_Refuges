@@ -43,8 +43,11 @@
           >Nouveau chien</span
         >
         <!---->
-        <span @click="userModale" v-if="this.userLoggedIn.isAdmin"
-          >Admin utilisateurs</span
+        <router-link
+          to="/users"
+          v-if="this.userLoggedIn.isAdmin"
+          @click="getUsers"
+          >Admin utilisateurs</router-link
         >
         <span @click="profilModale" v-if="this.setUserLogged">Mon profil</span>
         <!---->
@@ -54,8 +57,7 @@
         v-bind:toggleModale="toggleModale"
         v-bind:toggleClose="toggleClose"
       ></dogModale>
-      <userModale v-bind:userRevele="userRevele" v-bind:userModale="userModale">
-      </userModale>
+
       <profilModale
         v-bind:profilRevele="profilRevele"
         v-bind:profilModale="profilModale"
@@ -69,7 +71,6 @@
 import Header from "./components/header.vue";
 import store from "./store/index";
 import dogModale from "./components/chiens/createDogModal.vue";
-import userModale from "./components/user/UserModal.vue";
 import profilModale from "./components/user/profilModale.vue";
 
 import configAxios from "../src/axios/configAxios";
@@ -87,14 +88,14 @@ export default {
       token: localStorage.getItem("token"),
       /*****props */
       createDogRevele: false,
-      userRevele: false,
+
       profilRevele: false,
     };
   },
   components: {
     Header,
     dogModale,
-    userModale,
+
     profilModale,
 
     //Footer,
@@ -113,8 +114,8 @@ export default {
     toggleClose: function() {
       this.createDogRevele = false;
     },
-    userModale: function() {
-      configAxios
+    getUsers: async function() {
+      await configAxios
         .get("user")
         .then((res) =>
           store

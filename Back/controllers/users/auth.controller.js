@@ -11,9 +11,11 @@ const createToken = (id, isAdmin, pseudo, email) => {
 
 module.exports.signUp = async (req, res) => {
   const { pseudo, email, password, isAdmin } = req.body;
+  console.log(req.body);
   try {
     const user = await UserModel.create({ pseudo, email, password, isAdmin });
     res.status(201).json({ user: user._id });
+    console.log(user);
   } catch (err) {
     const errors = signUpErrors(err);
     res.status(200).send({ errors });
@@ -25,7 +27,6 @@ module.exports.signIn = async (req, res) => {
 
   try {
     const user = await UserModel.login(email, password);
-    console.log(user);
     const token = createToken(
       user._id,
       user.isAdmin,

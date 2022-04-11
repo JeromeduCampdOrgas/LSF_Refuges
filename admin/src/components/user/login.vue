@@ -23,7 +23,7 @@
         />
       </div>
       <p class="alerte" v-show="isVisible">
-        L'adresse mail est obligatoire et doit être une adresse valide. <br />
+        L'adresse mail est obligatoire et doit être valide. <br />
         Le mot de passe est obligatoire et doit comporter entre 4 et 10
         caractères.
       </p>
